@@ -1,12 +1,14 @@
 {
     "name": "zendframework/zend-expressive-session-cache",
-    "description": "<package description; should match repository description>",
+    "description": "PSR-6-based zend-expressive-session adapter.",
     "license": "BSD-3-Clause",
     "keywords": [
-        "components",
+        "expressive",
         "zf",
         "zendframework",
-        "<individual keywords for current package>"
+        "cache",
+        "psr-6",
+        "session"
     ],
     "support": {
         "docs": "https://docs.zendframework.com/zend-expressive-session-cache/",
@@ -17,9 +19,11 @@
         "forum": "https://discourse.zendframework.com/c/questions/components"
     },
     "require": {
-        "php": "^7.1"
+        "php": "^7.1",
+        "psr/cache": "^1.0"
     },
     "require-dev": {
+        "fig/cache-util": "^1.0@dev",
         "phpunit/phpunit": "^7.1.1",
         "zendframework/zend-coding-standard": "~1.0.0"
     },
