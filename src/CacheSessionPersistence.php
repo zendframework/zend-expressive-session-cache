@@ -98,7 +98,7 @@ class CacheSessionPersistence implements SessionPersistenceInterface
         string $cookiePath = '/',
         string $cacheLimiter = 'nocache',
         int $cacheExpire = 10800,
-        int $lastModified = null
+        ?int $lastModified = null
     ) {
         $this->cache = $cache;
 
@@ -233,11 +233,11 @@ class CacheSessionPersistence implements SessionPersistenceInterface
     /**
      * Return the Last-Modified header line based on the request's script file
      * modified time. If no script file could be derived from the request we use
-     * this class file modification time as fallback.
+     * the file modification time of the current working directory as a fallback.
      *
-     * @return string|false
+     * @return string
      */
-    private function determineLastModifiedValue()
+    private function determineLastModifiedValue() : string
     {
         $cwd = getcwd();
         foreach (['public/index.php', 'index.php'] as $filename) {
@@ -249,7 +249,7 @@ class CacheSessionPersistence implements SessionPersistenceInterface
             return gmdate(self::HTTP_DATE_FORMAT, filemtime($path));
         }
 
-        return false;
+        return gmdate(self::HTTP_DATE_FORMAT, filemtime($cwd));
     }
 
     /**

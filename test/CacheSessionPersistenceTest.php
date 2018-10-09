@@ -225,7 +225,7 @@ class CacheSessionPersistenceTest extends TestCase
         $this->assertAttributeSame('/', 'cookiePath', $persistence);
         $this->assertAttributeSame('nocache', 'cacheLimiter', $persistence);
         $this->assertAttributeSame(10800, 'cacheExpire', $persistence);
-        $this->assertAttributeSame(false, 'lastModified', $persistence);
+        $this->assertAttributeNotEmpty('lastModified', $persistence);
     }
 
     public function validCacheLimiters() : array
