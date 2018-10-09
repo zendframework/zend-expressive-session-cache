@@ -1,0 +1,94 @@
+{
+    "docs": [
+        {
+            "location": "/",
+            "text": "zend-expressive-session-cache\n\n\n\n\n\n\nThis library provides a \nPSR-6\n session\npersistence adapter for \nzend-expressive-session\n.\n\n\nInstallation\n\n\nRun the following to install this library:\n\n\n$ composer require zendframework/zend-expressive-session-cache\n\n\n\nDocumentation\n\n\nBrowse the documentation online at https://docs.zendframework.com/zend-expressive-session-cache/\n\n\nSupport\n\n\n\n\nIssues\n\n\nChat\n\n\nForum",
+            "title": "zend-expressive-session-cache"
+        },
+        {
+            "location": "/#zend-expressive-session-cache",
+            "text": "This library provides a  PSR-6  session\npersistence adapter for  zend-expressive-session .",
+            "title": "zend-expressive-session-cache"
+        },
+        {
+            "location": "/#installation",
+            "text": "Run the following to install this library:  $ composer require zendframework/zend-expressive-session-cache",
+            "title": "Installation"
+        },
+        {
+            "location": "/#documentation",
+            "text": "Browse the documentation online at https://docs.zendframework.com/zend-expressive-session-cache/",
+            "title": "Documentation"
+        },
+        {
+            "location": "/#support",
+            "text": "Issues  Chat  Forum",
+            "title": "Support"
+        },
+        {
+            "location": "/v1/intro/",
+            "text": "zend-expressive-session-cache\n\n\nThis component provides a \nPSR-6\n session\npersistence adapter for use with \nzend-expressive-session\n.\n\n\nPSR-6 defines cache items and cache item pools. This package uses a cache item\npool in which to store and retrieve sessions. PSR-6 was chosen over the simpler\n\nPSR-16\n as it specifically provides\nfunctionality around \nexpiry\n, which allows us to expire sessions.\n\n\nInstallation\n\n\nInstall zend-expressive-session-cache via \nComposer\n:\n\n\n$ composer require zendframework/zend-expressive-session-cache\n\n\n\nYou will also need to install a package that provides a PSR-6\n\nCacheItemPoolInterface\n implementation. You can \nsearch for PSR-6 providers on\nPackagist\n. We have\nhad excellent luck with the various implementations provided by the \nPHP-Cache\nproject\n.\n\n\nUsage\n\n\nGenerally, you will only provide configuration for this service, including\nconfiguring a PSR-6 \nCacheItemPoolInterface\n service; zend-expressive-session\nwill then consume it via its \nSessionMiddleware\n.",
+            "title": "Introduction"
+        },
+        {
+            "location": "/v1/intro/#zend-expressive-session-cache",
+            "text": "This component provides a  PSR-6  session\npersistence adapter for use with  zend-expressive-session .  PSR-6 defines cache items and cache item pools. This package uses a cache item\npool in which to store and retrieve sessions. PSR-6 was chosen over the simpler PSR-16  as it specifically provides\nfunctionality around  expiry , which allows us to expire sessions.",
+            "title": "zend-expressive-session-cache"
+        },
+        {
+            "location": "/v1/intro/#installation",
+            "text": "Install zend-expressive-session-cache via  Composer :  $ composer require zendframework/zend-expressive-session-cache  You will also need to install a package that provides a PSR-6 CacheItemPoolInterface  implementation. You can  search for PSR-6 providers on\nPackagist . We have\nhad excellent luck with the various implementations provided by the  PHP-Cache\nproject .",
+            "title": "Installation"
+        },
+        {
+            "location": "/v1/intro/#usage",
+            "text": "Generally, you will only provide configuration for this service, including\nconfiguring a PSR-6  CacheItemPoolInterface  service; zend-expressive-session\nwill then consume it via its  SessionMiddleware .",
+            "title": "Usage"
+        },
+        {
+            "location": "/v1/config/",
+            "text": "Configuration\n\n\nThis package allows configuring the following items:\n\n\n\n\nThe PSR-6 \nCacheItemPoolInterface\n service to use.\n\n\nThe session cookie name.\n\n\nThe session cookie path.\n\n\nThe cache limiter (which controls how resources using sessions are cached by the browser).\n\n\nWhen the session expires.\n\n\nWhen the resource using a session was last modified.\n\n\n\n\nThis document details how to configure each of these items.\n\n\nConfig service\n\n\nThis package looks for a service named \nconfig\n that returns an array or\narray-like value. Inside this value, it looks for a key named\n\nzend-expressive-session-cache\n, which is expected to be an associative array or\nobject that acts like an associative array.\n\n\nreturn [\n    'zend-expressive-session-cache' => [\n        // key/value pairs\n    ],\n];\n\n\n\nCacheItemPoolInterface\n\n\nBy default, the factory will look for a service named\n\nPsr\\Cache\\CacheItemPoolInterface\n. If found, that service will be used to seed\nthe persistence adapter.\n\n\nYou may also provide a \ncache_item_pool_service\n configuration value. If\npresent, this service name will be queried instead.\n\n\nUsing a global pool\n\n\nTo use a global cache item pool, configure the PSR-6 \nCacheItemPoolInterface\n\nservice in your dependency configuration:\n\n\nuse Psr\\Cache\\CacheItemPoolInterface;\n\nreturn [\n    'dependencies' => [\n        'factories' => [\n            CacheItemPoolInterface::class => FactoryProvidingACachePool::class,\n        ],\n    ],\n];\n\n\n\nUsing a named pool\n\n\nTo use a specific cache item pool:\n\n\nuse Psr\\Cache\\CacheItemPoolInterface;\n\nreturn [\n    'dependencies' => [\n        'factories' => [\n            'MoreSpecificPool' => FactoryProvidingACachePool::class,\n        ],\n    ],\n    'zend-expressive-session-cache' => [\n        'cache_item_pool_service' => 'MoreSpecificPool',\n    ],\n];\n\n\n\nNon-Pool configuration\n\n\nAs noted earlier, you may configure a number of other values to customize your\npersistence adapter. The following is example configuration, with inline\ncomments detailing expected and default values.\n\n\nuse Psr\\Cache\\CacheItemPoolInterface;\n\nreturn [\n    'zend-expressive-session-cache' => [\n        // Detailed in the above section; allows using a different\n        // cache item pool than the global one.\n        'cache_item_pool_service' => CacheItemPoolInterface::class,\n\n        // The name of the session cookie. This name must comply with\n        // the syntax outlined in https://tools.ietf.org/html/rfc6265.html\n        'cookie_name' => 'PHPSESSION',\n\n        // The path prefix of the cookie domain to which it applies.\n        'cookie_path' => '/',\n\n        // Governs the various cache control headers emitted when\n        // a session cookie is provided to the client. Value may be one\n        // of \"nocache\", \"public\", \"private\", or \"private_no_expire\";\n        // semantics are the same as outlined in\n        // http://php.net/session_cache_limiter\n        'cache_limiter' => 'nocache',\n\n        // When the cache and the cookie should expire, in seconds. Defaults\n        // to 180 minutes.\n        'cache_expire' => 10800,\n\n        // An integer value indicating when the resource to which the session\n        // applies was last modified. If not provided, it uses the last\n        // modified time of, in order,\n        // - the public/index.php file of the current working directory\n        // - the index.php file of the current working directory\n        // - the current working directory\n        'last_modified' => null,\n    ],\n];",
+            "title": "Configuration"
+        },
+        {
+            "location": "/v1/config/#configuration",
+            "text": "This package allows configuring the following items:   The PSR-6  CacheItemPoolInterface  service to use.  The session cookie name.  The session cookie path.  The cache limiter (which controls how resources using sessions are cached by the browser).  When the session expires.  When the resource using a session was last modified.   This document details how to configure each of these items.",
+            "title": "Configuration"
+        },
+        {
+            "location": "/v1/config/#config-service",
+            "text": "This package looks for a service named  config  that returns an array or\narray-like value. Inside this value, it looks for a key named zend-expressive-session-cache , which is expected to be an associative array or\nobject that acts like an associative array.  return [\n    'zend-expressive-session-cache' => [\n        // key/value pairs\n    ],\n];",
+            "title": "Config service"
+        },
+        {
+            "location": "/v1/config/#cacheitempoolinterface",
+            "text": "By default, the factory will look for a service named Psr\\Cache\\CacheItemPoolInterface . If found, that service will be used to seed\nthe persistence adapter.  You may also provide a  cache_item_pool_service  configuration value. If\npresent, this service name will be queried instead.",
+            "title": "CacheItemPoolInterface"
+        },
+        {
+            "location": "/v1/config/#using-a-global-pool",
+            "text": "To use a global cache item pool, configure the PSR-6  CacheItemPoolInterface \nservice in your dependency configuration:  use Psr\\Cache\\CacheItemPoolInterface;\n\nreturn [\n    'dependencies' => [\n        'factories' => [\n            CacheItemPoolInterface::class => FactoryProvidingACachePool::class,\n        ],\n    ],\n];",
+            "title": "Using a global pool"
+        },
+        {
+            "location": "/v1/config/#using-a-named-pool",
+            "text": "To use a specific cache item pool:  use Psr\\Cache\\CacheItemPoolInterface;\n\nreturn [\n    'dependencies' => [\n        'factories' => [\n            'MoreSpecificPool' => FactoryProvidingACachePool::class,\n        ],\n    ],\n    'zend-expressive-session-cache' => [\n        'cache_item_pool_service' => 'MoreSpecificPool',\n    ],\n];",
+            "title": "Using a named pool"
+        },
+        {
+            "location": "/v1/config/#non-pool-configuration",
+            "text": "As noted earlier, you may configure a number of other values to customize your\npersistence adapter. The following is example configuration, with inline\ncomments detailing expected and default values.  use Psr\\Cache\\CacheItemPoolInterface;\n\nreturn [\n    'zend-expressive-session-cache' => [\n        // Detailed in the above section; allows using a different\n        // cache item pool than the global one.\n        'cache_item_pool_service' => CacheItemPoolInterface::class,\n\n        // The name of the session cookie. This name must comply with\n        // the syntax outlined in https://tools.ietf.org/html/rfc6265.html\n        'cookie_name' => 'PHPSESSION',\n\n        // The path prefix of the cookie domain to which it applies.\n        'cookie_path' => '/',\n\n        // Governs the various cache control headers emitted when\n        // a session cookie is provided to the client. Value may be one\n        // of \"nocache\", \"public\", \"private\", or \"private_no_expire\";\n        // semantics are the same as outlined in\n        // http://php.net/session_cache_limiter\n        'cache_limiter' => 'nocache',\n\n        // When the cache and the cookie should expire, in seconds. Defaults\n        // to 180 minutes.\n        'cache_expire' => 10800,\n\n        // An integer value indicating when the resource to which the session\n        // applies was last modified. If not provided, it uses the last\n        // modified time of, in order,\n        // - the public/index.php file of the current working directory\n        // - the index.php file of the current working directory\n        // - the current working directory\n        'last_modified' => null,\n    ],\n];",
+            "title": "Non-Pool configuration"
+        },
+        {
+            "location": "/v1/manual/",
+            "text": "Manual usage\n\n\nThe following details the constructor of the \nZend\\Expressive\\Session\\Cache\\CacheSessionPersistence\n class:\n\n\n/**\n * Prepare session cache and default HTTP caching headers.\n *\n * The cache limiter setting is used to determine how to send HTTP\n * client-side caching headers. Those headers will be added\n * programmatically to the response along with the session set-cookie\n * header when the session data is persisted.\n *\n * @param int $cacheExpire Number of seconds until the session cookie\n *     should expire; defaults to 180 minutes (180m * 60s/m = 10800s),\n *     which is the default of the PHP session.cache_expire setting. This\n *     is also used to set the TTL for session data.\n * @param null|int $lastModified Timestamp when the application was last\n *     modified. If not provided, this will look for each of\n *     public/index.php, index.php, and finally the current working\n *     directory, using the filemtime() of the first found.\n */\npublic function __construct(\n    \\Psr\\Cache\\CacheItemPoolInterface $cache,\n    string $cookieName,\n    string $cookiePath = '/',\n    string $cacheLimiter = 'nocache',\n    int $cacheExpire = 10800,\n    ?int $lastModified = null\n) {\n\n\n\nPass all required values and any optional values when creating an instance:\n\n\nuse Cache\\Adapter\\Predis\\PredisCachePool;\nuse Zend\\Expressive\\Session\\Cache\\CacheSessionPersistence;\nuse Zend\\Expressive\\Session\\SessionMiddleware;\n\n$cachePool = new PredisCachePool('tcp://localhost:6379');\n$persistence = new CacheSessionPersistence(\n    $cachePool,\n    'MYSITE',\n    '/',\n    'public',\n    60 * 60 * 24 * 30 // 30 days\n);\n$middleware = new SessionMiddleware($persistence);",
+            "title": "Manual Usage"
+        },
+        {
+            "location": "/v1/manual/#manual-usage",
+            "text": "The following details the constructor of the  Zend\\Expressive\\Session\\Cache\\CacheSessionPersistence  class:  /**\n * Prepare session cache and default HTTP caching headers.\n *\n * The cache limiter setting is used to determine how to send HTTP\n * client-side caching headers. Those headers will be added\n * programmatically to the response along with the session set-cookie\n * header when the session data is persisted.\n *\n * @param int $cacheExpire Number of seconds until the session cookie\n *     should expire; defaults to 180 minutes (180m * 60s/m = 10800s),\n *     which is the default of the PHP session.cache_expire setting. This\n *     is also used to set the TTL for session data.\n * @param null|int $lastModified Timestamp when the application was last\n *     modified. If not provided, this will look for each of\n *     public/index.php, index.php, and finally the current working\n *     directory, using the filemtime() of the first found.\n */\npublic function __construct(\n    \\Psr\\Cache\\CacheItemPoolInterface $cache,\n    string $cookieName,\n    string $cookiePath = '/',\n    string $cacheLimiter = 'nocache',\n    int $cacheExpire = 10800,\n    ?int $lastModified = null\n) {  Pass all required values and any optional values when creating an instance:  use Cache\\Adapter\\Predis\\PredisCachePool;\nuse Zend\\Expressive\\Session\\Cache\\CacheSessionPersistence;\nuse Zend\\Expressive\\Session\\SessionMiddleware;\n\n$cachePool = new PredisCachePool('tcp://localhost:6379');\n$persistence = new CacheSessionPersistence(\n    $cachePool,\n    'MYSITE',\n    '/',\n    'public',\n    60 * 60 * 24 * 30 // 30 days\n);\n$middleware = new SessionMiddleware($persistence);",
+            "title": "Manual usage"
+        }
+    ]
+}
