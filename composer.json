@@ -1,6 +1,6 @@
 {
     "name": "zendframework/zend-expressive-session-cache",
-    "description": "PSR-6-based zend-expressive-session adapter.",
+    "description": "PSR-6 session persistence adapter for zend-expressive-session.",
     "license": "BSD-3-Clause",
     "keywords": [
         "expressive",
