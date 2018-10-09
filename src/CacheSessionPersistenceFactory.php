@@ -25,10 +25,10 @@ class CacheSessionPersistenceFactory
             throw Exception\MissingDependencyException::forService($cacheService);
         }
 
-        $cookieName   = $config['cookie_name']   ?? 'PHPSESSION';
-        $cookiePath   = $config['cookie_path']   ?? '/';
+        $cookieName   = $config['cookie_name'] ?? 'PHPSESSION';
+        $cookiePath   = $config['cookie_path'] ?? '/';
         $cacheLimiter = $config['cache_limiter'] ?? 'nocache';
-        $cacheExpire  = $config['cache_expire']  ?? 10800;
+        $cacheExpire  = $config['cache_expire'] ?? 10800;
         $lastModified = $config['last_modified'] ?? null;
 
         return new CacheSessionPersistence(

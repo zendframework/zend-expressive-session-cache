@@ -87,7 +87,11 @@ class CacheSessionPersistenceFactoryTest extends TestCase
         $this->assertAttributeSame('/api', 'cookiePath', $persistence);
         $this->assertAttributeSame('public', 'cacheLimiter', $persistence);
         $this->assertAttributeSame(300, 'cacheExpire', $persistence);
-        $this->assertAttributeSame(gmdate(CacheSessionPersistence::HTTP_DATE_FORMAT, $lastModified), 'lastModified', $persistence);
+        $this->assertAttributeSame(
+            gmdate(CacheSessionPersistence::HTTP_DATE_FORMAT, $lastModified),
+            'lastModified',
+            $persistence
+        );
     }
 
     public function testFactoryAllowsConfiguringCacheAdapterServiceName()
