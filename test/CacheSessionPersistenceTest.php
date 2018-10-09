@@ -80,8 +80,10 @@ class CacheSessionPersistenceTest extends TestCase
     public function assertNotCacheHeaders(array $allowed, Response $response)
     {
         $found = array_intersect(
-            array_diff(self::CACHE_HEADERS, array_change_key_case($allowed, CASE_LOWER)), // headers that should not be present
-            array_change_key_case(array_keys($response->getHeaders()), CASE_LOWER)        // what was sent
+            // headers that should not be present
+            array_diff(self::CACHE_HEADERS, array_change_key_case($allowed, CASE_LOWER)),
+            // what was sent
+            array_change_key_case(array_keys($response->getHeaders()), CASE_LOWER)
         );
         $this->assertEquals(
             [],
