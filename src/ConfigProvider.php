@@ -21,6 +21,9 @@ class ConfigProvider
     public function getDependencies() : array
     {
         return [
+            'factories' => [
+                CacheSessionPersistence::class => CacheSessionPersistenceFactory::class,
+            ],
         ];
     }
 }
