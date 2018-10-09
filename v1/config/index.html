@@ -193,6 +193,10 @@
                         <a href="#non-pool-configuration" class="toc__link">Non-Pool configuration</a>
                     </li>
                 
+                    <li class="toc__entry">
+                        <a href="#using-the-service" class="toc__link">Using the service</a>
+                    </li>
+                
             </ul>
         </div>
     
@@ -291,6 +295,41 @@ return [
         // - the index.php file of the current working directory
         // - the current working directory
         'last_modified' =&gt; null,
+    ],
+];</code></pre>
+
+<h2 id="using-the-service">Using the service</h2>
+<p>By default, this package define the service <code>Zend\Expressive\Session\Cache\CacheSessionPersistence</code>, 
+assigning it to the factory <code>Zend\Expressive\Session\Cache\CacheSessionPersistenceFactory</code>.
+After you have installed the package, you will need to tell your application to
+use this service when using the <code>SessionMiddleware</code>.</p>
+<p>The <code>SessionMiddleware</code> looks for the service <code>Zend\Expressive\Session\SessionPersistenceInterface</code>.
+You can tell your container to use the <code>CacheSessionPersistence</code> in two
+different ways.</p>
+<p>First, you can <em>alias</em> it:</p>
+<pre class="codehilite"><code class="language-php">// in config/autoload/dependencies.global.php:
+use Zend\Expressive\Session\Cache\CacheSessionPersistence;
+use Zend\Expressive\Session\SessionPersistenceInterface;
+
+return [
+    'dependencies =&gt; [
+        'aliases' =&gt; [
+            SessionPersistenceInterface::class =&gt; CacheSessionPersistence::class,
+        ],
+    ],
+];</code></pre>
+
+<p>Second, you can instead assign the <code>SessionPersistenceInterface</code> service to the
+factory for the <code>CacheSessionPersistence</code> implementation:</p>
+<pre class="codehilite"><code class="language-php">// in config/autoload/dependencies.global.php:
+use Zend\Expressive\Session\Cache\CacheSessionPersistenceFactory;
+use Zend\Expressive\Session\SessionPersistenceInterface;
+
+return [
+    'dependencies =&gt; [
+        'factories' =&gt; [
+            SessionPersistenceInterface::class =&gt; CacheSessionPersistenceFactory::class,
+        ],
     ],
 ];</code></pre>
 
