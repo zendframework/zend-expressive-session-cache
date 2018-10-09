@@ -87,10 +87,10 @@ class CacheSessionPersistence implements SessionPersistenceInterface
      *     should expire; defaults to 180 minutes (180m * 60s/m = 10800s),
      *     which is the default of the PHP session.cache_expire setting. This
      *     is also used to set the TTL for session data.
-     * @param $lastModified Timestamp when the application was last modified. If
-     *     not provided, this will look for each of public/index.php and
-     *     index.php, using their filemtime() if found. If not found, no
-     *     Last-Modified header will be sent.
+     * @param null|int $lastModified Timestamp when the application was last
+     *     modified. If not provided, this will look for each of
+     *     public/index.php, index.php, and finally the current working
+     *     directory, using the filemtime() of the first found.
      */
     public function __construct(
         CacheItemPoolInterface $cache,
