@@ -114,3 +114,47 @@ return [
     ],
 ];
 ```
+
+## Using the service
+
+By default, this package define the service `Zend\Expressive\Session\Cache\CacheSessionPersistence`, 
+assigning it to the factory `Zend\Expressive\Session\Cache\CacheSessionPersistenceFactory`.
+After you have installed the package, you will need to tell your application to
+use this service when using the `SessionMiddleware`.
+
+The `SessionMiddleware` looks for the service `Zend\Expressive\Session\SessionPersistenceInterface`.
+You can tell your container to use the `CacheSessionPersistence` in two
+different ways.
+
+First, you can _alias_ it:
+
+```php
+// in config/autoload/dependencies.global.php:
+use Zend\Expressive\Session\Cache\CacheSessionPersistence;
+use Zend\Expressive\Session\SessionPersistenceInterface;
+
+return [
+    'dependencies => [
+        'aliases' => [
+            SessionPersistenceInterface::class => CacheSessionPersistence::class,
+        ],
+    ],
+];
+```
+
+Second, you can instead assign the `SessionPersistenceInterface` service to the
+factory for the `CacheSessionPersistence` implementation:
+
+```php
+// in config/autoload/dependencies.global.php:
+use Zend\Expressive\Session\Cache\CacheSessionPersistenceFactory;
+use Zend\Expressive\Session\SessionPersistenceInterface;
+
+return [
+    'dependencies => [
+        'factories' => [
+            SessionPersistenceInterface::class => CacheSessionPersistenceFactory::class,
+        ],
+    ],
+];
+```
