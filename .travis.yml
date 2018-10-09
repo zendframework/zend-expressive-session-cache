@@ -8,7 +8,7 @@ cache:
 
 env:
   global:
-    - COMPOSER_ARGS="--no-interaction"
+    - COMPOSER_ARGS="--no-interaction --no-scripts"
     - COVERAGE_DEPS="php-coveralls/php-coveralls"
 
 matrix:
@@ -31,6 +31,9 @@ matrix:
       env:
         - DEPS=locked
     - php: 7.2
+      env:
+        - DEPS=latest
+    - php: nightly
       env:
         - DEPS=latest
 
