@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "52a9faf631a33cd8ca3938b4b5fd23ac",
+    "content-hash": "dc1c043b3435e17baa59ce01a15eb627",
     "packages": [
         {
             "name": "dflydev/fig-cookies",
@@ -428,61 +428,6 @@
                 "instantiate"
             ],
             "time": "2017-07-22T11:58:36+00:00"
-        },
-        {
-            "name": "fig/cache-util",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/php-fig/cache-util.git",
-                "reference": "e084832a53dbd3c7d65eddd20d2f134c949666cf"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/cache-util/zipball/e084832a53dbd3c7d65eddd20d2f134c949666cf",
-                "reference": "e084832a53dbd3c7d65eddd20d2f134c949666cf",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.4.0",
-                "psr/cache": "^1.0.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^5.1",
-                "squizlabs/php_codesniffer": "^2.3.1"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Fig\\Cache\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "PHP-FIG",
-                    "homepage": "http://www.php-fig.org/"
-                },
-                {
-                    "name": "Larry Garfield",
-                    "homepage": "http://www.garfieldtech.com/"
-                }
-            ],
-            "description": "Useful utility classes and traits for implementing the PSR cache standard",
-            "keywords": [
-                "cache",
-                "psr",
-                "psr-6"
-            ],
-            "time": "2018-09-22T17:46:23+00:00"
         },
         {
             "name": "myclabs/deep-copy",
@@ -2066,9 +2011,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "fig/cache-util": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

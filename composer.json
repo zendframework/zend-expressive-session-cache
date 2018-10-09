@@ -26,10 +26,12 @@
         "zendframework/zend-expressive-session": "^1.1"
     },
     "require-dev": {
-        "fig/cache-util": "^1.0@dev",
         "phpunit/phpunit": "^7.1.1",
         "zendframework/zend-coding-standard": "~1.0.0",
         "zendframework/zend-diactoros": "^2.0"
+    },
+    "suggest": {
+        "psr/cache-implementation": "This package requires a PSR-6 CacheItemPoolInterface implementation."
     },
     "autoload": {
         "psr-4": {
@@ -46,7 +48,8 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "1.0-dev"
+            "dev-master": "1.0.x-dev",
+            "dev-develop": "1.1.x-dev"
         },
         "zf": {
             "config-provider": "Zend\\Expressive\\Session\\Cache\\ConfigProvider"
