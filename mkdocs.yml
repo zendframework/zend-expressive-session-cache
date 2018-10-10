@@ -1,9 +1,9 @@
 docs_dir: docs/book
 site_dir: docs/html
 pages:
-    - index.md
+    - Home: index.md
     - Introduction: v1/intro.md
-    - v1/config.md
+    - Configuration: v1/config.md
     - "Manual Usage": v1/manual.md
 site_name: zend-expressive-session-cache
 site_description: 'PSR-6 session persistence adapter for zend-expressive-session.'
