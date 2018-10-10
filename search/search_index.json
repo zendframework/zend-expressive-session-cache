@@ -3,7 +3,7 @@
         {
             "location": "/",
             "text": "zend-expressive-session-cache\n\n\n\n\n\n\nThis library provides a \nPSR-6\n session\npersistence adapter for \nzend-expressive-session\n.\n\n\nInstallation\n\n\nRun the following to install this library:\n\n\n$ composer require zendframework/zend-expressive-session-cache\n\n\n\nDocumentation\n\n\nBrowse the documentation online at https://docs.zendframework.com/zend-expressive-session-cache/\n\n\nSupport\n\n\n\n\nIssues\n\n\nChat\n\n\nForum",
-            "title": "zend-expressive-session-cache"
+            "title": "Home"
         },
         {
             "location": "/#zend-expressive-session-cache",
