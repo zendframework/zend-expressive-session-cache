@@ -134,7 +134,7 @@ use Zend\Expressive\Session\Cache\CacheSessionPersistence;
 use Zend\Expressive\Session\SessionPersistenceInterface;
 
 return [
-    'dependencies => [
+    'dependencies' => [
         'aliases' => [
             SessionPersistenceInterface::class => CacheSessionPersistence::class,
         ],
@@ -151,7 +151,7 @@ use Zend\Expressive\Session\Cache\CacheSessionPersistenceFactory;
 use Zend\Expressive\Session\SessionPersistenceInterface;
 
 return [
-    'dependencies => [
+    'dependencies' => [
         'factories' => [
             SessionPersistenceInterface::class => CacheSessionPersistenceFactory::class,
         ],
