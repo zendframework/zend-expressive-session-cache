@@ -8,6 +8,8 @@ This package allows configuring the following items:
 - The cache limiter (which controls how resources using sessions are cached by the browser).
 - When the session expires.
 - When the resource using a session was last modified.
+- Whether or not to create a _persistent_ session cookie (i.e., one that will
+  not expire when the browser is closed).
 
 This document details how to configure each of these items.
 
@@ -111,6 +113,13 @@ return [
         // - the index.php file of the current working directory
         // - the current working directory
         'last_modified' => null,
+
+        // A boolean value indicating whether or not the session cookie
+        // should persist. By default, this is disabled (false); passing
+        // a boolean true value will enable the feature. When enabled, the
+        // cookie will be generated with a Max-Age directive equal to the
+        // cache_expire value as noted above.
+        'persistent' => false,
     ],
 ];
 ```

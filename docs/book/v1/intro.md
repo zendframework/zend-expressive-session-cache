@@ -1,4 +1,4 @@
-# zend-expressive-session-cache
+# Introduction
 
 This component provides a [PSR-6](https://www.php-fig.org/psr/psr-6/) session
 persistence adapter for use with [zend-expressive-session](https://docs.zendframework.com/zend-expressive-session/).

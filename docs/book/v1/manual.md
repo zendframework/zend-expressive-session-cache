@@ -19,6 +19,9 @@ The following details the constructor of the `Zend\Expressive\Session\Cache\Cach
  *     modified. If not provided, this will look for each of
  *     public/index.php, index.php, and finally the current working
  *     directory, using the filemtime() of the first found.
+ * @param bool $persistent Whether or not to create a persistent cookie. If
+ *     provided, this sets the Max-Age for the cookie to the value of
+ *     $cacheExpire.
  */
 public function __construct(
     \Psr\Cache\CacheItemPoolInterface $cache,
@@ -26,7 +29,8 @@ public function __construct(
     string $cookiePath = '/',
     string $cacheLimiter = 'nocache',
     int $cacheExpire = 10800,
-    ?int $lastModified = null
+    ?int $lastModified = null,
+    bool $persistent = false
 ) {
 ```
 
