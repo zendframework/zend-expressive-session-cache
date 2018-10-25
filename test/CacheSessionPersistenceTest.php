@@ -63,6 +63,20 @@ class CacheSessionPersistenceTest extends TestCase
         );
     }
 
+    public function assertCookieMaxAgeMirrorsExpiry(int $expiry, Response $response)
+    {
+        $setCookie = $response->getHeaderLine('Set-Cookie');
+        $parts = explode(';', $setCookie);
+        $parts = array_map(function ($value) {
+            return trim($value);
+        }, $parts);
+        $this->assertContains(
+            'Max-Age=' . $expiry,
+            $parts,
+            sprintf('Could not find Max-Age=%d within set-cookie header: %s', $expiry, $setCookie)
+        );
+    }
+
     public function assertCacheHeaders(string $cacheLimiter, Response $response)
     {
         switch ($cacheLimiter) {
@@ -620,5 +634,33 @@ class CacheSessionPersistenceTest extends TestCase
         $this->assertNotSame($response, $result);
         $this->assertSetCookieUsesNewIdentifier('', $result);
         $this->assertNotCacheHeaders([$header], $result);
+    }
+
+    public function testPersistentSessionCookieIncludesExpiration()
+    {
+        $session = new Session(['foo' => 'bar'], 'identifier');
+        $response = new Response();
+        $persistence = new CacheSessionPersistence(
+            $this->cachePool->reveal(),
+            'test',
+            '/',
+            'nocache',
+            600, // expiry
+            time(),
+            true // mark session cookie as persistent
+        );
+
+        $cacheItem = $this->prophesize(CacheItemInterface::class);
+        $cacheItem->set(['foo' => 'bar'])->shouldBeCalled();
+        $cacheItem->expiresAfter(Argument::type('int'))->shouldBeCalled();
+        $this->cachePool
+            ->getItem('identifier')
+            ->will([$cacheItem, 'reveal']);
+        $this->cachePool->save(Argument::that([$cacheItem, 'reveal']))->shouldBeCalled();
+
+        $result = $persistence->persistSession($session, $response);
+
+        $this->assertNotSame($response, $result);
+        $this->assertCookieMaxAgeMirrorsExpiry(600, $result);
     }
 }

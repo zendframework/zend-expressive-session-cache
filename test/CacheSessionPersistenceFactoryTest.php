@@ -58,6 +58,7 @@ class CacheSessionPersistenceFactoryTest extends TestCase
         $this->assertAttributeSame('nocache', 'cacheLimiter', $persistence);
         $this->assertAttributeSame(10800, 'cacheExpire', $persistence);
         $this->assertAttributeNotEmpty('lastModified', $persistence);
+        $this->assertAttributeSame(false, 'persistent', $persistence);
     }
 
     public function testFactoryAllowsConfiguringAllConstructorArguments()
@@ -74,6 +75,7 @@ class CacheSessionPersistenceFactoryTest extends TestCase
                 'cache_limiter' => 'public',
                 'cache_expire'  => 300,
                 'last_modified' => $lastModified,
+                'persistent'    => true,
             ],
         ]);
         $this->container->has(CacheItemPoolInterface::class)->willReturn(true);
@@ -92,6 +94,7 @@ class CacheSessionPersistenceFactoryTest extends TestCase
             'lastModified',
             $persistence
         );
+        $this->assertAttributeSame(true, 'persistent', $persistence);
     }
 
     public function testFactoryAllowsConfiguringCacheAdapterServiceName()

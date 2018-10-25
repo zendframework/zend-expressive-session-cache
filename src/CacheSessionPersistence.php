@@ -75,6 +75,9 @@ class CacheSessionPersistence implements SessionPersistenceInterface
     /** @var false|string */
     private $lastModified;
 
+    /** @var bool */
+    private $persistent;
+
     /**
      * Prepare session cache and default HTTP caching headers.
      *
@@ -91,6 +94,9 @@ class CacheSessionPersistence implements SessionPersistenceInterface
      *     modified. If not provided, this will look for each of
      *     public/index.php, index.php, and finally the current working
      *     directory, using the filemtime() of the first found.
+     * @param bool $persistent Whether or not to create a persistent cookie. If
+     *     provided, this sets the Max-Age for the cookie to the value of
+     *     $cacheExpire.
      */
     public function __construct(
         CacheItemPoolInterface $cache,
@@ -98,7 +104,8 @@ class CacheSessionPersistence implements SessionPersistenceInterface
         string $cookiePath = '/',
         string $cacheLimiter = 'nocache',
         int $cacheExpire = 10800,
-        ?int $lastModified = null
+        ?int $lastModified = null,
+        bool $persistent = false
     ) {
         $this->cache = $cache;
 
@@ -118,6 +125,8 @@ class CacheSessionPersistence implements SessionPersistenceInterface
         $this->lastModified = $lastModified
             ? gmdate(self::HTTP_DATE_FORMAT, $lastModified)
             : $this->determineLastModifiedValue();
+
+        $this->persistent = $persistent;
     }
 
     public function initializeSessionFromRequest(ServerRequestInterface $request) : SessionInterface
@@ -151,6 +160,10 @@ class CacheSessionPersistence implements SessionPersistenceInterface
         $sessionCookie = SetCookie::create($this->cookieName)
             ->withValue($id)
             ->withPath($this->cookiePath);
+
+        if ($this->persistent) {
+            $sessionCookie = $sessionCookie->withMaxAge($this->cacheExpire);
+        }
 
         $response = FigResponseCookies::set($response, $sessionCookie);
 

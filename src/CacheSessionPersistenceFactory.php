@@ -30,6 +30,7 @@ class CacheSessionPersistenceFactory
         $cacheLimiter = $config['cache_limiter'] ?? 'nocache';
         $cacheExpire  = $config['cache_expire'] ?? 10800;
         $lastModified = $config['last_modified'] ?? null;
+        $persistent   = $config['persistent'] ?? false;
 
         return new CacheSessionPersistence(
             $container->get($cacheService),
@@ -37,7 +38,8 @@ class CacheSessionPersistenceFactory
             $cookiePath,
             $cacheLimiter,
             $cacheExpire,
-            $lastModified
+            $lastModified,
+            $persistent
         );
     }
 }
