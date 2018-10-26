@@ -192,8 +192,8 @@
  *     public/index.php, index.php, and finally the current working
  *     directory, using the filemtime() of the first found.
  * @param bool $persistent Whether or not to create a persistent cookie. If
- *     provided, this sets the Max-Age for the cookie to the value of
- *     $cacheExpire.
+ *     provided, this sets the Expires directive for the cookie based on
+ *     the value of $cacheExpire.
  */
 public function __construct(
     \Psr\Cache\CacheItemPoolInterface $cache,
