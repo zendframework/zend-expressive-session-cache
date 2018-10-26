@@ -117,8 +117,8 @@ return [
         // A boolean value indicating whether or not the session cookie
         // should persist. By default, this is disabled (false); passing
         // a boolean true value will enable the feature. When enabled, the
-        // cookie will be generated with a Max-Age directive equal to the
-        // cache_expire value as noted above.
+        // cookie will be generated with an Expires directive equal to the
+        // the current time plus the cache_expire value as noted above.
         'persistent' => false,
     ],
 ];

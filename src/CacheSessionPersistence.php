@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace Zend\Expressive\Session\Cache;
 
+use DateInterval;
+use DateTimeImmutable;
 use Dflydev\FigCookies\FigRequestCookies;
 use Dflydev\FigCookies\FigResponseCookies;
 use Dflydev\FigCookies\SetCookie;
@@ -95,8 +97,8 @@ class CacheSessionPersistence implements SessionPersistenceInterface
      *     public/index.php, index.php, and finally the current working
      *     directory, using the filemtime() of the first found.
      * @param bool $persistent Whether or not to create a persistent cookie. If
-     *     provided, this sets the Max-Age for the cookie to the value of
-     *     $cacheExpire.
+     *     provided, this sets the Expires directive for the cookie based on
+     *     the value of $cacheExpire.
      */
     public function __construct(
         CacheItemPoolInterface $cache,
@@ -162,7 +164,9 @@ class CacheSessionPersistence implements SessionPersistenceInterface
             ->withPath($this->cookiePath);
 
         if ($this->persistent) {
-            $sessionCookie = $sessionCookie->withMaxAge($this->cacheExpire);
+            $sessionCookie = $sessionCookie->withExpires(
+                (new DateTimeImmutable())->add(new DateInterval(sprintf('PT%dS', $this->cacheExpire)))
+            );
         }
 
         $response = FigResponseCookies::set($response, $sessionCookie);
