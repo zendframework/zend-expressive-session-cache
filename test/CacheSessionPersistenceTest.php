@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace ZendTest\Expressive\Session\Cache;
 
+use DateInterval;
+use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Psr\Cache\CacheItemInterface;
@@ -33,6 +35,7 @@ class CacheSessionPersistenceTest extends TestCase
     public function setUp()
     {
         $this->cachePool = $this->prophesize(CacheItemPoolInterface::class);
+        $this->currentTime = new DateTimeImmutable();
     }
 
     public function assertSetCookieUsesIdentifier(string $identifier, Response $response)
@@ -63,17 +66,29 @@ class CacheSessionPersistenceTest extends TestCase
         );
     }
 
-    public function assertCookieMaxAgeMirrorsExpiry(int $expiry, Response $response)
+    public function assertCookieExpiryMirrorsExpiry(int $expiry, Response $response)
     {
         $setCookie = $response->getHeaderLine('Set-Cookie');
         $parts = explode(';', $setCookie);
         $parts = array_map(function ($value) {
             return trim($value);
         }, $parts);
-        $this->assertContains(
-            'Max-Age=' . $expiry,
-            $parts,
-            sprintf('Could not find Max-Age=%d within set-cookie header: %s', $expiry, $setCookie)
+        $parts = array_filter($parts, function ($value) {
+            return (bool) preg_match('/^Expires=/', $value);
+        });
+
+        $this->assertSame(1, count($parts), 'No Expires directive found in cookie: ' . $setCookie);
+
+        $compare = $this->currentTime->add(new DateInterval(sprintf('PT%dS', $expiry)));
+
+        $value = array_shift($parts);
+        [, $expires] = explode('=', $value);
+        $expiresDate = new DateTimeImmutable($expires);
+
+        $this->assertGreaterThanOrEqual(
+            $expiresDate,
+            $compare,
+            sprintf('Cookie expiry "%s" is not at least "%s"', $expiresDate->format('r'), $compare->format('r'))
         );
     }
 
@@ -661,6 +676,6 @@ class CacheSessionPersistenceTest extends TestCase
         $result = $persistence->persistSession($session, $response);
 
         $this->assertNotSame($response, $result);
-        $this->assertCookieMaxAgeMirrorsExpiry(600, $result);
+        $this->assertCookieExpiryMirrorsExpiry(600, $result);
     }
 }

@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 1.1.1 - TBD
+## 1.1.1 - 2018-10-26
 
 ### Added
 
@@ -10,7 +10,10 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Changed
 
-- Nothing.
+- [#4](https://github.com/zendframework/zend-expressive-session-cache/pull/4) modifies the behavior when setting a persistent cookie. Previously,
+  it would set a Max-Age directive on the cookie; however, this is not supported
+  in all browsers or SAPIs. As such, it now creates an Expires directive, which
+  will have essentially the same effect for users.
 
 ### Deprecated
 
