@@ -18,6 +18,7 @@ use Psr\Cache\CacheItemPoolInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Zend\Expressive\Session\Session;
+use Zend\Expressive\Session\SessionCookiePersistenceInterface;
 use Zend\Expressive\Session\SessionInterface;
 use Zend\Expressive\Session\SessionPersistenceInterface;
 
@@ -163,9 +164,10 @@ class CacheSessionPersistence implements SessionPersistenceInterface
             ->withValue($id)
             ->withPath($this->cookiePath);
 
-        if ($this->persistent) {
+        $persistenceDuration = $this->getPersistenceDuration($session);
+        if ($persistenceDuration) {
             $sessionCookie = $sessionCookie->withExpires(
-                (new DateTimeImmutable())->add(new DateInterval(sprintf('PT%dS', $this->cacheExpire)))
+                (new DateTimeImmutable())->add(new DateInterval(sprintf('PT%dS', $persistenceDuration)))
             );
         }
 
@@ -318,5 +320,15 @@ class CacheSessionPersistence implements SessionPersistenceInterface
             || $response->hasHeader('Cache-Control')
             || $response->hasHeader('Pragma')
         );
+    }
+
+    private function getPersistenceDuration(SessionInterface $session) : int
+    {
+        $duration = $this->persistent ? $this->cacheExpire : 0;
+        if ($session instanceof SessionInterface) {
+            $ttl = $session->getSessionLifetime();
+            $duration = $ttl ? $ttl : $duration;
+        }
+        return $duration < 0 ? 0 : $duration;
     }
 }
