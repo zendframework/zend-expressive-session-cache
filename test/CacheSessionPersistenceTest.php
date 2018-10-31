@@ -20,6 +20,7 @@ use Zend\Diactoros\Response;
 use Zend\Expressive\Session\Cache\CacheSessionPersistence;
 use Zend\Expressive\Session\Cache\Exception;
 use Zend\Expressive\Session\Session;
+use Zend\Expressive\Session\SessionCookiePersistenceInterface;
 
 class CacheSessionPersistenceTest extends TestCase
 {
@@ -89,6 +90,24 @@ class CacheSessionPersistenceTest extends TestCase
             $expiresDate,
             $compare,
             sprintf('Cookie expiry "%s" is not at least "%s"', $expiresDate->format('r'), $compare->format('r'))
+        );
+    }
+
+    public function assertCookieHasNoExpiryDirective(Response $response)
+    {
+        $setCookie = $response->getHeaderLine('Set-Cookie');
+        $parts = explode(';', $setCookie);
+        $parts = array_map(function ($value) {
+            return trim($value);
+        }, $parts);
+        $parts = array_filter($parts, function ($value) {
+            return (bool) preg_match('/^Expires=/', $value);
+        });
+
+        $this->assertSame(
+            0,
+            count($parts),
+            'Expires directive found in cookie, but should not be present: ' . $setCookie
         );
     }
 
@@ -677,5 +696,262 @@ class CacheSessionPersistenceTest extends TestCase
 
         $this->assertNotSame($response, $result);
         $this->assertCookieExpiryMirrorsExpiry(600, $result);
+    }
+
+    public function testPersistenceDurationSpecifiedInSessionUsedWhenPresentEvenWhenEngineDoesNotSpecifyPersistence()
+    {
+        $session = new Session(['foo' => 'bar'], 'identifier');
+        $response = new Response();
+
+        // Engine created with defaults, which means no cookie persistence
+        $persistence = new CacheSessionPersistence(
+            $this->cachePool->reveal(),
+            'test'
+        );
+
+        $cacheItem = $this->prophesize(CacheItemInterface::class);
+        $cacheItem
+            ->set(Argument::that(function ($value) {
+                TestCase::assertInternalType('array', $value);
+                TestCase::assertArrayHasKey('foo', $value);
+                TestCase::assertSame('bar', $value['foo']);
+                TestCase::assertArrayHasKey(SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY, $value);
+                TestCase::assertSame(1200, $value[SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY]);
+                return $value;
+            }))
+            ->shouldBeCalled();
+        $cacheItem->expiresAfter(Argument::type('int'))->shouldBeCalled();
+        $this->cachePool->hasItem('identifier')->willReturn(false);
+        $this->cachePool
+            ->getItem(Argument::that(function ($value) {
+                TestCase::assertRegExp('/^[a-f0-9]{32}$/', $value);
+                return $value;
+            }))
+            ->will([$cacheItem, 'reveal']);
+        $this->cachePool->save(Argument::that([$cacheItem, 'reveal']))->shouldBeCalled();
+
+        $session->persistSessionFor(1200);
+        $result = $persistence->persistSession($session, $response);
+
+        $this->assertNotSame($response, $result);
+        $this->assertCookieExpiryMirrorsExpiry(1200, $result);
+    }
+
+    public function testPersistenceDurationSpecifiedInSessionOverridesExpiryWhenSessionPersistenceIsEnabled()
+    {
+        $session = new Session(['foo' => 'bar'], 'identifier');
+        $response = new Response();
+        $persistence = new CacheSessionPersistence(
+            $this->cachePool->reveal(),
+            'test',
+            '/',
+            'nocache',
+            600, // expiry
+            time(),
+            true // mark session cookie as persistent
+        );
+
+        $cacheItem = $this->prophesize(CacheItemInterface::class);
+        $cacheItem
+            ->set(Argument::that(function ($value) {
+                TestCase::assertInternalType('array', $value);
+                TestCase::assertArrayHasKey('foo', $value);
+                TestCase::assertSame('bar', $value['foo']);
+                TestCase::assertArrayHasKey(SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY, $value);
+                TestCase::assertSame(1200, $value[SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY]);
+                return $value;
+            }))
+            ->shouldBeCalled();
+        $cacheItem->expiresAfter(Argument::type('int'))->shouldBeCalled();
+        $this->cachePool->hasItem('identifier')->willReturn(false);
+        $this->cachePool
+            ->getItem(Argument::that(function ($value) {
+                TestCase::assertRegExp('/^[a-f0-9]{32}$/', $value);
+                return $value;
+            }))
+            ->will([$cacheItem, 'reveal']);
+        $this->cachePool->save(Argument::that([$cacheItem, 'reveal']))->shouldBeCalled();
+
+        $session->persistSessionFor(1200);
+        $result = $persistence->persistSession($session, $response);
+
+        $this->assertNotSame($response, $result);
+        $this->assertCookieExpiryMirrorsExpiry(1200, $result);
+    }
+
+    public function testPersistenceDurationOfZeroSpecifiedInSessionDisablesPersistence()
+    {
+        $session = new Session([
+            'foo' => 'bar',
+            SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY => 1200,
+        ], 'identifier');
+        $response = new Response();
+        $persistence = new CacheSessionPersistence(
+            $this->cachePool->reveal(),
+            'test'
+        );
+
+        $cacheItem = $this->prophesize(CacheItemInterface::class);
+        $cacheItem
+            ->set(Argument::that(function ($value) {
+                TestCase::assertInternalType('array', $value);
+                TestCase::assertArrayHasKey('foo', $value);
+                TestCase::assertSame('bar', $value['foo']);
+                TestCase::assertArrayHasKey(SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY, $value);
+                TestCase::assertSame(0, $value[SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY]);
+                return $value;
+            }))
+            ->shouldBeCalled();
+        $cacheItem->expiresAfter(Argument::type('int'))->shouldBeCalled();
+        $this->cachePool->hasItem('identifier')->willReturn(false);
+        $this->cachePool
+            ->getItem(Argument::that(function ($value) {
+                TestCase::assertRegExp('/^[a-f0-9]{32}$/', $value);
+                return $value;
+            }))
+            ->will([$cacheItem, 'reveal']);
+        $this->cachePool->save(Argument::that([$cacheItem, 'reveal']))->shouldBeCalled();
+
+        $session->persistSessionFor(0);
+        $result = $persistence->persistSession($session, $response);
+
+        $this->assertNotSame($response, $result);
+        $this->assertCookieHasNoExpiryDirective($result);
+    }
+
+    public function testPersistenceDurationOfZeroWithoutSessionLifetimeKeyInDataResultsInGlobalPersistenceExpiry()
+    {
+        // No previous session lifetime set
+        $session = new Session([
+            'foo' => 'bar',
+        ], 'identifier');
+        $response = new Response();
+        $persistence = new CacheSessionPersistence(
+            $this->cachePool->reveal(),
+            'test',
+            '/',
+            'nocache',
+            600, // expiry
+            time(),
+            true // mark session cookie as persistent
+        );
+
+        $cacheItem = $this->prophesize(CacheItemInterface::class);
+        $cacheItem
+            ->set(Argument::that(function ($value) {
+                TestCase::assertInternalType('array', $value);
+                TestCase::assertArrayHasKey('foo', $value);
+                TestCase::assertSame('bar', $value['foo']);
+                TestCase::assertArrayNotHasKey(SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY, $value);
+                return $value;
+            }))
+            ->shouldBeCalled();
+        $cacheItem->expiresAfter(Argument::type('int'))->shouldBeCalled();
+        $this->cachePool->hasItem('identifier')->willReturn(false);
+        $this->cachePool
+            ->getItem(Argument::that(function ($value) {
+                TestCase::assertSame('identifier', $value);
+                return $value;
+            }))
+            ->will([$cacheItem, 'reveal']);
+        $this->cachePool->save(Argument::that([$cacheItem, 'reveal']))->shouldBeCalled();
+
+        $result = $persistence->persistSession($session, $response);
+
+        $this->assertSame(0, $session->getSessionLifetime());
+        $this->assertNotSame($response, $result);
+        $this->assertCookieExpiryMirrorsExpiry(600, $result);
+    }
+
+    public function testPersistenceDurationOfZeroIgnoresGlobalPersistenceExpiry()
+    {
+        $session = new Session([
+            'foo' => 'bar',
+        ], 'identifier');
+        $response = new Response();
+        $persistence = new CacheSessionPersistence(
+            $this->cachePool->reveal(),
+            'test',
+            '/',
+            'nocache',
+            600, // expiry
+            time(),
+            true // mark session cookie as persistent
+        );
+
+        $cacheItem = $this->prophesize(CacheItemInterface::class);
+        $cacheItem
+            ->set(Argument::that(function ($value) {
+                TestCase::assertInternalType('array', $value);
+                TestCase::assertArrayHasKey('foo', $value);
+                TestCase::assertSame('bar', $value['foo']);
+                TestCase::assertArrayHasKey(SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY, $value);
+                TestCase::assertSame(0, $value[SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY]);
+                return $value;
+            }))
+            ->shouldBeCalled();
+        $cacheItem->expiresAfter(Argument::type('int'))->shouldBeCalled();
+        $this->cachePool->hasItem('identifier')->willReturn(false);
+        $this->cachePool
+            ->getItem(Argument::that(function ($value) {
+                TestCase::assertRegExp('/^[a-f0-9]{32}$/', $value);
+                return $value;
+            }))
+            ->will([$cacheItem, 'reveal']);
+        $this->cachePool->save(Argument::that([$cacheItem, 'reveal']))->shouldBeCalled();
+
+        // Calling persistSessionFor sets the session lifetime key in the data,
+        // which allows us to override the value.
+        $session->persistSessionFor(0);
+        $result = $persistence->persistSession($session, $response);
+
+        $this->assertNotSame($response, $result);
+        $this->assertCookieHasNoExpiryDirective($result);
+    }
+
+    public function testPersistenceDurationInSessionDataWithValueOfZeroIgnoresGlobalPersistenceExpiry()
+    {
+        $session = new Session([
+            'foo' => 'bar',
+            SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY => 0,
+        ], 'identifier');
+        $response = new Response();
+        $persistence = new CacheSessionPersistence(
+            $this->cachePool->reveal(),
+            'test',
+            '/',
+            'nocache',
+            600, // expiry
+            time(),
+            true // mark session cookie as persistent
+        );
+
+        $cacheItem = $this->prophesize(CacheItemInterface::class);
+        $cacheItem
+            ->set(Argument::that(function ($value) {
+                TestCase::assertInternalType('array', $value);
+                TestCase::assertArrayHasKey('foo', $value);
+                TestCase::assertSame('baz', $value['foo']);
+                TestCase::assertArrayHasKey(SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY, $value);
+                TestCase::assertSame(0, $value[SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY]);
+                return $value;
+            }))
+            ->shouldBeCalled();
+        $cacheItem->expiresAfter(Argument::type('int'))->shouldBeCalled();
+        $this->cachePool->hasItem('identifier')->willReturn(false);
+        $this->cachePool
+            ->getItem(Argument::that(function ($value) {
+                TestCase::assertRegExp('/^[a-f0-9]{32}$/', $value);
+                return $value;
+            }))
+            ->will([$cacheItem, 'reveal']);
+        $this->cachePool->save(Argument::that([$cacheItem, 'reveal']))->shouldBeCalled();
+
+        // Changing the data, to ensure we trigger a new session cookie
+        $session->set('foo', 'baz');
+        $result = $persistence->persistSession($session, $response);
+
+        $this->assertNotSame($response, $result);
+        $this->assertCookieHasNoExpiryDirective($result);
     }
 }

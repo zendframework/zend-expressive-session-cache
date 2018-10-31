@@ -21,7 +21,10 @@ The following details the constructor of the `Zend\Expressive\Session\Cache\Cach
  *     directory, using the filemtime() of the first found.
  * @param bool $persistent Whether or not to create a persistent cookie. If
  *     provided, this sets the Expires directive for the cookie based on
- *     the value of $cacheExpire.
+ *     the value of $cacheExpire. Developers can also set the expiry at
+ *     runtime via the Session instance, using its persistSessionFor()
+ *     method; that value will be honored even if global persistence
+ *     is toggled true here.
  */
 public function __construct(
     \Psr\Cache\CacheItemPoolInterface $cache,
