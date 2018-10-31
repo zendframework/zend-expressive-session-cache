@@ -297,6 +297,11 @@ return [
         // a boolean true value will enable the feature. When enabled, the
         // cookie will be generated with an Expires directive equal to the
         // the current time plus the cache_expire value as noted above.
+        //
+        // As of 1.2.0, developers may define the session TTL by calling the
+        // session instance's `persistSessionFor(int $duration)` method. When
+        // that method has been called, the engine will use that value even if
+        // the below flag is toggled off.
         'persistent' =&gt; false,
     ],
 ];</code></pre>
