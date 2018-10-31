@@ -325,9 +325,10 @@ class CacheSessionPersistence implements SessionPersistenceInterface
     private function getPersistenceDuration(SessionInterface $session) : int
     {
         $duration = $this->persistent ? $this->cacheExpire : 0;
-        if ($session instanceof SessionInterface) {
-            $ttl = $session->getSessionLifetime();
-            $duration = $ttl ? $ttl : $duration;
+        if ($session instanceof SessionCookiePersistenceInterface
+            && $session->has(SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY)
+        ) {
+            $duration = $session->getSessionLifetime();
         }
         return $duration < 0 ? 0 : $duration;
     }
