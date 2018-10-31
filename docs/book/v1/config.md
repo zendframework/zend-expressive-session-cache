@@ -120,12 +120,10 @@ return [
         // cookie will be generated with an Expires directive equal to the
         // the current time plus the cache_expire value as noted above.
         //
-        // As of 1.1.0, developers may define the session TTL by calling the
+        // As of 1.2.0, developers may define the session TTL by calling the
         // session instance's `persistSessionFor(int $duration)` method. When
-        // this is present, the engine will use that value even if the below
-        // flag is toggled off. When the flag is enabled, the session TTL will
-        // be honored if it is greater than zero; otherwise, the cache_expire
-        // value will be used, as this defines the global default behavior.
+        // that method has been called, the engine will use that value even if
+        // the below flag is toggled off.
         'persistent' => false,
     ],
 ];
