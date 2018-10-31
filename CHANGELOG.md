@@ -2,33 +2,14 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 1.2.0 - TBD
+## 1.2.0 - 2018-10-31
 
 ### Added
 
-- Nothing.
-
-### Changed
-
-- Nothing.
-
-### Deprecated
-
-- Nothing.
-
-### Removed
-
-- Nothing.
-
-### Fixed
-
-- Nothing.
-
-## 1.1.2 - TBD
-
-### Added
-
-- Nothing.
+- [#5](https://github.com/zendframework/zend-expressive-session-cache/pull/5) adds support for the new `SessionCookiePersistenceInterface` added
+  in zend-expressive-session 1.2.0.  Specifically, `CacheSessionPersistence` now
+  queries the session instance `getSessionLifetime()` method to determine
+  whether or not to send an `Expires` directive with the session cookie.
 
 ### Changed
 

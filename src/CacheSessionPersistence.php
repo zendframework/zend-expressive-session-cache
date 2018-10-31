@@ -18,6 +18,7 @@ use Psr\Cache\CacheItemPoolInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Zend\Expressive\Session\Session;
+use Zend\Expressive\Session\SessionCookiePersistenceInterface;
 use Zend\Expressive\Session\SessionInterface;
 use Zend\Expressive\Session\SessionPersistenceInterface;
 
@@ -98,7 +99,10 @@ class CacheSessionPersistence implements SessionPersistenceInterface
      *     directory, using the filemtime() of the first found.
      * @param bool $persistent Whether or not to create a persistent cookie. If
      *     provided, this sets the Expires directive for the cookie based on
-     *     the value of $cacheExpire.
+     *     the value of $cacheExpire. Developers can also set the expiry at
+     *     runtime via the Session instance, using its persistSessionFor()
+     *     method; that value will be honored even if global persistence
+     *     is toggled true here.
      */
     public function __construct(
         CacheItemPoolInterface $cache,
@@ -163,9 +167,10 @@ class CacheSessionPersistence implements SessionPersistenceInterface
             ->withValue($id)
             ->withPath($this->cookiePath);
 
-        if ($this->persistent) {
+        $persistenceDuration = $this->getPersistenceDuration($session);
+        if ($persistenceDuration) {
             $sessionCookie = $sessionCookie->withExpires(
-                (new DateTimeImmutable())->add(new DateInterval(sprintf('PT%dS', $this->cacheExpire)))
+                (new DateTimeImmutable())->add(new DateInterval(sprintf('PT%dS', $persistenceDuration)))
             );
         }
 
@@ -318,5 +323,16 @@ class CacheSessionPersistence implements SessionPersistenceInterface
             || $response->hasHeader('Cache-Control')
             || $response->hasHeader('Pragma')
         );
+    }
+
+    private function getPersistenceDuration(SessionInterface $session) : int
+    {
+        $duration = $this->persistent ? $this->cacheExpire : 0;
+        if ($session instanceof SessionCookiePersistenceInterface
+            && $session->has(SessionCookiePersistenceInterface::SESSION_LIFETIME_KEY)
+        ) {
+            $duration = $session->getSessionLifetime();
+        }
+        return $duration < 0 ? 0 : $duration;
     }
 }
