@@ -29,7 +29,10 @@ The following details the constructor of the `Zend\Expressive\Session\Cache\Cach
 public function __construct(
     \Psr\Cache\CacheItemPoolInterface $cache,
     string $cookieName,
+    string $cookieDomain = null,
     string $cookiePath = '/',
+    bool $cookieSecure = false,
+    bool $cookieHttpOnly = false,
     string $cacheLimiter = 'nocache',
     int $cacheExpire = 10800,
     ?int $lastModified = null,
@@ -48,7 +51,10 @@ $cachePool = new PredisCachePool('tcp://localhost:6379');
 $persistence = new CacheSessionPersistence(
     $cachePool,
     'MYSITE',
+    null
     '/',
+    false,
+    false,
     'public',
     60 * 60 * 24 * 30 // 30 days
 );

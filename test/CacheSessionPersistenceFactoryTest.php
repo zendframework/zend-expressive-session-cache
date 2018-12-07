@@ -55,6 +55,9 @@ class CacheSessionPersistenceFactoryTest extends TestCase
         // These we did not
         $this->assertAttributeSame('PHPSESSION', 'cookieName', $persistence);
         $this->assertAttributeSame('/', 'cookiePath', $persistence);
+        $this->assertAttributeSame(null, 'cookieDomain', $persistence);
+        $this->assertAttributeSame(false, 'cookieSecure', $persistence);
+        $this->assertAttributeSame(false, 'cookieHttpOnly', $persistence);
         $this->assertAttributeSame('nocache', 'cacheLimiter', $persistence);
         $this->assertAttributeSame(10800, 'cacheExpire', $persistence);
         $this->assertAttributeNotEmpty('lastModified', $persistence);
@@ -70,12 +73,15 @@ class CacheSessionPersistenceFactoryTest extends TestCase
         $this->container->has('config')->willReturn(true);
         $this->container->get('config')->willReturn([
             'zend-expressive-session-cache' => [
-                'cookie_name'   => 'TESTING',
-                'cookie_path'   => '/api',
-                'cache_limiter' => 'public',
-                'cache_expire'  => 300,
-                'last_modified' => $lastModified,
-                'persistent'    => true,
+                'cookie_name'      => 'TESTING',
+                'cookie_domain'    => 'example.com',
+                'cookie_path'      => '/api',
+                'cookie_secure'    => true,
+                'cookie_http_only' => true,
+                'cache_limiter'    => 'public',
+                'cache_expire'     => 300,
+                'last_modified'    => $lastModified,
+                'persistent'       => true,
             ],
         ]);
         $this->container->has(CacheItemPoolInterface::class)->willReturn(true);
@@ -87,6 +93,9 @@ class CacheSessionPersistenceFactoryTest extends TestCase
         $this->assertAttributeSame($cachePool, 'cache', $persistence);
         $this->assertAttributeSame('TESTING', 'cookieName', $persistence);
         $this->assertAttributeSame('/api', 'cookiePath', $persistence);
+        $this->assertAttributeSame('example.com', 'cookieDomain', $persistence);
+        $this->assertAttributeSame(true, 'cookieSecure', $persistence);
+        $this->assertAttributeSame(true, 'cookieHttpOnly', $persistence);
         $this->assertAttributeSame('public', 'cacheLimiter', $persistence);
         $this->assertAttributeSame(300, 'cacheExpire', $persistence);
         $this->assertAttributeSame(

@@ -4,7 +4,10 @@ This package allows configuring the following items:
 
 - The PSR-6 `CacheItemPoolInterface` service to use.
 - The session cookie name.
+- The session cookie domain.
 - The session cookie path.
+- The session cookie secure option.
+- The session cookie httponly option.
 - The cache limiter (which controls how resources using sessions are cached by the browser).
 - When the session expires.
 - When the resource using a session was last modified.
@@ -92,8 +95,27 @@ return [
         // the syntax outlined in https://tools.ietf.org/html/rfc6265.html
         'cookie_name' => 'PHPSESSION',
 
+        // The (sub)domain that the cookie is available to. Setting this
+        // to a subdomain (such as 'www.example.com') will make the cookie
+        // available to that subdomain and all other sub-domains of it
+        // (i.e. w2.www.example.com). To make the cookie available to the
+        // whole domain (including all subdomains of it), simply set the
+        // value to the domain name ('example.com', in this case).
+        // Leave this null to use browser default (current hostname).
+        'cookie_domain' => null,
+
         // The path prefix of the cookie domain to which it applies.
         'cookie_path' => '/',
+
+        // Indicates that the cookie should only be transmitted over a
+        // secure HTTPS connection from the client. When set to TRUE, the
+        // cookie will only be set if a secure connection exists.
+        'cookie_secure' => false,
+
+        // When TRUE the cookie will be made accessible only through the
+        // HTTP protocol. This means that the cookie won't be accessible
+        // by scripting languages, such as JavaScript.
+        'cookie_http_only' => false,
 
         // Governs the various cache control headers emitted when
         // a session cookie is provided to the client. Value may be one
@@ -131,7 +153,7 @@ return [
 
 ## Using the service
 
-By default, this package define the service `Zend\Expressive\Session\Cache\CacheSessionPersistence`, 
+By default, this package define the service `Zend\Expressive\Session\Cache\CacheSessionPersistence`,
 assigning it to the factory `Zend\Expressive\Session\Cache\CacheSessionPersistenceFactory`.
 After you have installed the package, you will need to tell your application to
 use this service when using the `SessionMiddleware`.
