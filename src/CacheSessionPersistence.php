@@ -72,8 +72,17 @@ class CacheSessionPersistence implements SessionPersistenceInterface
     /** @var string */
     private $cookieName;
 
+    /** @var string|null */
+    private $cookieDomain;
+
     /** @var string */
     private $cookiePath;
+
+    /** @var bool */
+    private $cookieSecure;
+
+    /** @var bool */
+    private $cookieHttpOnly;
 
     /** @var false|string */
     private $lastModified;
@@ -107,7 +116,10 @@ class CacheSessionPersistence implements SessionPersistenceInterface
     public function __construct(
         CacheItemPoolInterface $cache,
         string $cookieName,
+        string $cookieDomain = null,
         string $cookiePath = '/',
+        bool $cookieSecure = false,
+        bool $cookieHttpOnly = false,
         string $cacheLimiter = 'nocache',
         int $cacheExpire = 10800,
         ?int $lastModified = null,
@@ -120,7 +132,13 @@ class CacheSessionPersistence implements SessionPersistenceInterface
         }
         $this->cookieName = $cookieName;
 
+        $this->cookieDomain = $cookieDomain;
+
         $this->cookiePath = $cookiePath;
+
+        $this->cookieSecure = $cookieSecure;
+
+        $this->cookieHttpOnly = $cookieHttpOnly;
 
         $this->cacheLimiter = in_array($cacheLimiter, self::SUPPORTED_CACHE_LIMITERS, true)
             ? $cacheLimiter
@@ -165,7 +183,10 @@ class CacheSessionPersistence implements SessionPersistenceInterface
 
         $sessionCookie = SetCookie::create($this->cookieName)
             ->withValue($id)
-            ->withPath($this->cookiePath);
+            ->withDomain($this->cookieDomain)
+            ->withPath($this->cookiePath)
+            ->withSecure($this->cookieSecure)
+            ->withHttpOnly($this->cookieHttpOnly);
 
         $persistenceDuration = $this->getPersistenceDuration($session);
         if ($persistenceDuration) {

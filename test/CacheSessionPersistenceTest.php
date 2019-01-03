@@ -270,7 +270,10 @@ class CacheSessionPersistenceTest extends TestCase
         $this->assertAttributeSame('test', 'cookieName', $persistence);
 
         // These we did not
+        $this->assertAttributeSame(null, 'cookieDomain', $persistence);
         $this->assertAttributeSame('/', 'cookiePath', $persistence);
+        $this->assertAttributeSame(false, 'cookieSecure', $persistence);
+        $this->assertAttributeSame(false, 'cookieHttpOnly', $persistence);
         $this->assertAttributeSame('nocache', 'cacheLimiter', $persistence);
         $this->assertAttributeSame(10800, 'cacheExpire', $persistence);
         $this->assertAttributeNotEmpty('lastModified', $persistence);
@@ -296,7 +299,10 @@ class CacheSessionPersistenceTest extends TestCase
         $persistence = new CacheSessionPersistence(
             $this->cachePool->reveal(),
             'test',
+            'example.com',
             '/api',
+            true,
+            true,
             $cacheLimiter,
             100,
             $lastModified
@@ -305,6 +311,9 @@ class CacheSessionPersistenceTest extends TestCase
         $this->assertAttributeSame($this->cachePool->reveal(), 'cache', $persistence);
         $this->assertAttributeSame('test', 'cookieName', $persistence);
         $this->assertAttributeSame('/api', 'cookiePath', $persistence);
+        $this->assertAttributeSame('example.com', 'cookieDomain', $persistence);
+        $this->assertAttributeSame(true, 'cookieSecure', $persistence);
+        $this->assertAttributeSame(true, 'cookieHttpOnly', $persistence);
         $this->assertAttributeSame($cacheLimiter, 'cacheLimiter', $persistence);
         $this->assertAttributeSame(100, 'cacheExpire', $persistence);
         $this->assertAttributeSame(
@@ -319,13 +328,19 @@ class CacheSessionPersistenceTest extends TestCase
         $persistence = new CacheSessionPersistence(
             $this->cachePool->reveal(),
             'test',
+            'example.com',
             '/api',
+            true,
+            true,
             'not-valid'
         );
 
         $this->assertAttributeSame($this->cachePool->reveal(), 'cache', $persistence);
         $this->assertAttributeSame('test', 'cookieName', $persistence);
+        $this->assertAttributeSame('example.com', 'cookieDomain', $persistence);
         $this->assertAttributeSame('/api', 'cookiePath', $persistence);
+        $this->assertAttributeSame(true, 'cookieSecure', $persistence);
+        $this->assertAttributeSame(true, 'cookieHttpOnly', $persistence);
         $this->assertAttributeSame('nocache', 'cacheLimiter', $persistence);
     }
 
@@ -412,7 +427,10 @@ class CacheSessionPersistenceTest extends TestCase
         $persistence = new CacheSessionPersistence(
             $this->cachePool->reveal(),
             'test',
+            null,
             '/',
+            false,
+            false,
             $cacheLimiter,
             10800,
             time()
@@ -446,7 +464,10 @@ class CacheSessionPersistenceTest extends TestCase
         $persistence = new CacheSessionPersistence(
             $this->cachePool->reveal(),
             'test',
+            null,
             '/',
+            false,
+            false,
             $cacheLimiter,
             10800,
             time()
@@ -476,7 +497,10 @@ class CacheSessionPersistenceTest extends TestCase
         $persistence = new CacheSessionPersistence(
             $this->cachePool->reveal(),
             'test',
+            null,
             '/',
+            false,
+            false,
             $cacheLimiter,
             10800,
             time()
@@ -517,7 +541,10 @@ class CacheSessionPersistenceTest extends TestCase
         $persistence = new CacheSessionPersistence(
             $this->cachePool->reveal(),
             'test',
+            null,
             '/',
+            false,
+            false,
             $cacheLimiter,
             10800,
             time()
@@ -558,7 +585,10 @@ class CacheSessionPersistenceTest extends TestCase
         $persistence = new CacheSessionPersistence(
             $this->cachePool->reveal(),
             'test',
+            null,
             '/',
+            false,
+            false,
             $cacheLimiter,
             10800,
             time()
@@ -599,7 +629,10 @@ class CacheSessionPersistenceTest extends TestCase
         $persistence = new CacheSessionPersistence(
             $this->cachePool->reveal(),
             'test',
+            null,
             '/',
+            false,
+            false,
             $cacheLimiter,
             10800,
             time()
@@ -677,7 +710,10 @@ class CacheSessionPersistenceTest extends TestCase
         $persistence = new CacheSessionPersistence(
             $this->cachePool->reveal(),
             'test',
+            null,
             '/',
+            false,
+            false,
             'nocache',
             600, // expiry
             time(),
@@ -744,7 +780,10 @@ class CacheSessionPersistenceTest extends TestCase
         $persistence = new CacheSessionPersistence(
             $this->cachePool->reveal(),
             'test',
+            null,
             '/',
+            false,
+            false,
             'nocache',
             600, // expiry
             time(),
@@ -829,7 +868,10 @@ class CacheSessionPersistenceTest extends TestCase
         $persistence = new CacheSessionPersistence(
             $this->cachePool->reveal(),
             'test',
+            null,
             '/',
+            false,
+            false,
             'nocache',
             600, // expiry
             time(),
@@ -872,7 +914,10 @@ class CacheSessionPersistenceTest extends TestCase
         $persistence = new CacheSessionPersistence(
             $this->cachePool->reveal(),
             'test',
+            null,
             '/',
+            false,
+            false,
             'nocache',
             600, // expiry
             time(),
@@ -919,7 +964,10 @@ class CacheSessionPersistenceTest extends TestCase
         $persistence = new CacheSessionPersistence(
             $this->cachePool->reveal(),
             'test',
+            null,
             '/',
+            false,
+            false,
             'nocache',
             600, // expiry
             time(),
