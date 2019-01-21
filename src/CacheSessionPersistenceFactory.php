@@ -38,14 +38,14 @@ class CacheSessionPersistenceFactory
         return new CacheSessionPersistence(
             $container->get($cacheService),
             $cookieName,
-            $cookieDomain,
             $cookiePath,
-            $cookieSecure,
-            $cookieHttpOnly,
             $cacheLimiter,
             $cacheExpire,
             $lastModified,
-            $persistent
+            $persistent,
+            $cookieDomain,
+            $cookieSecure,
+            $cookieHttpOnly
         );
     }
 }

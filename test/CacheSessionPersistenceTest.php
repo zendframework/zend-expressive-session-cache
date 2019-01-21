@@ -299,13 +299,14 @@ class CacheSessionPersistenceTest extends TestCase
         $persistence = new CacheSessionPersistence(
             $this->cachePool->reveal(),
             'test',
-            'example.com',
             '/api',
-            true,
-            true,
             $cacheLimiter,
             100,
-            $lastModified
+            $lastModified,
+            false,
+            'example.com',
+            true,
+            true
         );
 
         $this->assertAttributeSame($this->cachePool->reveal(), 'cache', $persistence);
@@ -328,11 +329,14 @@ class CacheSessionPersistenceTest extends TestCase
         $persistence = new CacheSessionPersistence(
             $this->cachePool->reveal(),
             'test',
-            'example.com',
             '/api',
+            'not-valid',
+            100,
+            null,
+            false,
+            'example.com',
             true,
-            true,
-            'not-valid'
+            true
         );
 
         $this->assertAttributeSame($this->cachePool->reveal(), 'cache', $persistence);
@@ -427,10 +431,7 @@ class CacheSessionPersistenceTest extends TestCase
         $persistence = new CacheSessionPersistence(
             $this->cachePool->reveal(),
             'test',
-            null,
             '/',
-            false,
-            false,
             $cacheLimiter,
             10800,
             time()
@@ -464,10 +465,7 @@ class CacheSessionPersistenceTest extends TestCase
         $persistence = new CacheSessionPersistence(
             $this->cachePool->reveal(),
             'test',
-            null,
             '/',
-            false,
-            false,
             $cacheLimiter,
             10800,
             time()
@@ -497,10 +495,7 @@ class CacheSessionPersistenceTest extends TestCase
         $persistence = new CacheSessionPersistence(
             $this->cachePool->reveal(),
             'test',
-            null,
             '/',
-            false,
-            false,
             $cacheLimiter,
             10800,
             time()
@@ -541,10 +536,7 @@ class CacheSessionPersistenceTest extends TestCase
         $persistence = new CacheSessionPersistence(
             $this->cachePool->reveal(),
             'test',
-            null,
             '/',
-            false,
-            false,
             $cacheLimiter,
             10800,
             time()
@@ -585,10 +577,7 @@ class CacheSessionPersistenceTest extends TestCase
         $persistence = new CacheSessionPersistence(
             $this->cachePool->reveal(),
             'test',
-            null,
             '/',
-            false,
-            false,
             $cacheLimiter,
             10800,
             time()
@@ -629,10 +618,7 @@ class CacheSessionPersistenceTest extends TestCase
         $persistence = new CacheSessionPersistence(
             $this->cachePool->reveal(),
             'test',
-            null,
             '/',
-            false,
-            false,
             $cacheLimiter,
             10800,
             time()
@@ -710,10 +696,7 @@ class CacheSessionPersistenceTest extends TestCase
         $persistence = new CacheSessionPersistence(
             $this->cachePool->reveal(),
             'test',
-            null,
             '/',
-            false,
-            false,
             'nocache',
             600, // expiry
             time(),
@@ -780,10 +763,7 @@ class CacheSessionPersistenceTest extends TestCase
         $persistence = new CacheSessionPersistence(
             $this->cachePool->reveal(),
             'test',
-            null,
             '/',
-            false,
-            false,
             'nocache',
             600, // expiry
             time(),
@@ -868,10 +848,7 @@ class CacheSessionPersistenceTest extends TestCase
         $persistence = new CacheSessionPersistence(
             $this->cachePool->reveal(),
             'test',
-            null,
             '/',
-            false,
-            false,
             'nocache',
             600, // expiry
             time(),
@@ -914,10 +891,7 @@ class CacheSessionPersistenceTest extends TestCase
         $persistence = new CacheSessionPersistence(
             $this->cachePool->reveal(),
             'test',
-            null,
             '/',
-            false,
-            false,
             'nocache',
             600, // expiry
             time(),
@@ -964,10 +938,7 @@ class CacheSessionPersistenceTest extends TestCase
         $persistence = new CacheSessionPersistence(
             $this->cachePool->reveal(),
             'test',
-            null,
             '/',
-            false,
-            false,
             'nocache',
             600, // expiry
             time(),
