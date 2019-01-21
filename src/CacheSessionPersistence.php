@@ -121,7 +121,7 @@ class CacheSessionPersistence implements SessionPersistenceInterface
      *     by client-side apis (e.g., Javascript). An http-only cookie cannot
      *     be accessed by client-side apis.
      *
-     * @todo reorder the constructor arguments 
+     * @todo reorder the constructor arguments
      */
     public function __construct(
         CacheItemPoolInterface $cache,
