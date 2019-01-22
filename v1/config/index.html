@@ -201,7 +201,10 @@
 <ul>
 <li>The PSR-6 <code>CacheItemPoolInterface</code> service to use.</li>
 <li>The session cookie name.</li>
+<li>The session cookie domain.</li>
 <li>The session cookie path.</li>
+<li>The session cookie secure option.</li>
+<li>The session cookie httponly option.</li>
 <li>The cache limiter (which controls how resources using sessions are cached by the browser).</li>
 <li>When the session expires.</li>
 <li>When the resource using a session was last modified.</li>
@@ -270,8 +273,27 @@ return [
         // the syntax outlined in https://tools.ietf.org/html/rfc6265.html
         'cookie_name' =&gt; 'PHPSESSION',
 
+        // The (sub)domain that the cookie is available to. Setting this
+        // to a subdomain (such as 'www.example.com') will make the cookie
+        // available to that subdomain and all other sub-domains of it
+        // (i.e. w2.www.example.com). To make the cookie available to the
+        // whole domain (including all subdomains of it), simply set the
+        // value to the domain name ('example.com', in this case).
+        // Leave this null to use browser default (current hostname).
+        'cookie_domain' =&gt; null,
+
         // The path prefix of the cookie domain to which it applies.
         'cookie_path' =&gt; '/',
+
+        // Indicates that the cookie should only be transmitted over a
+        // secure HTTPS connection from the client. When set to TRUE, the
+        // cookie will only be set if a secure connection exists.
+        'cookie_secure' =&gt; false,
+
+        // When TRUE the cookie will be made accessible only through the
+        // HTTP protocol. This means that the cookie won't be accessible
+        // by scripting languages, such as JavaScript.
+        'cookie_http_only' =&gt; false,
 
         // Governs the various cache control headers emitted when
         // a session cookie is provided to the client. Value may be one
@@ -307,7 +329,7 @@ return [
 ];</code></pre>
 
 <h2 id="using-the-service">Using the service</h2>
-<p>By default, this package define the service <code>Zend\Expressive\Session\Cache\CacheSessionPersistence</code>, 
+<p>By default, this package define the service <code>Zend\Expressive\Session\Cache\CacheSessionPersistence</code>,
 assigning it to the factory <code>Zend\Expressive\Session\Cache\CacheSessionPersistenceFactory</code>.
 After you have installed the package, you will need to tell your application to
 use this service when using the <code>SessionMiddleware</code>.</p>
