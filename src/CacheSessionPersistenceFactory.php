@@ -25,12 +25,15 @@ class CacheSessionPersistenceFactory
             throw Exception\MissingDependencyException::forService($cacheService);
         }
 
-        $cookieName   = $config['cookie_name'] ?? 'PHPSESSION';
-        $cookiePath   = $config['cookie_path'] ?? '/';
-        $cacheLimiter = $config['cache_limiter'] ?? 'nocache';
-        $cacheExpire  = $config['cache_expire'] ?? 10800;
-        $lastModified = $config['last_modified'] ?? null;
-        $persistent   = $config['persistent'] ?? false;
+        $cookieName     = $config['cookie_name'] ?? 'PHPSESSION';
+        $cookieDomain   = $config['cookie_domain'] ?? null;
+        $cookiePath     = $config['cookie_path'] ?? '/';
+        $cookieSecure   = $config['cookie_secure'] ?? false;
+        $cookieHttpOnly = $config['cookie_http_only'] ?? false;
+        $cacheLimiter   = $config['cache_limiter'] ?? 'nocache';
+        $cacheExpire    = $config['cache_expire'] ?? 10800;
+        $lastModified   = $config['last_modified'] ?? null;
+        $persistent     = $config['persistent'] ?? false;
 
         return new CacheSessionPersistence(
             $container->get($cacheService),
@@ -39,7 +42,10 @@ class CacheSessionPersistenceFactory
             $cacheLimiter,
             $cacheExpire,
             $lastModified,
-            $persistent
+            $persistent,
+            $cookieDomain,
+            $cookieSecure,
+            $cookieHttpOnly
         );
     }
 }

@@ -2,11 +2,14 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 1.2.1 - TBD
+## 1.3.0 - 2019-01-22
 
 ### Added
 
-- Nothing.
+- [#7](https://github.com/zendframework/zend-expressive-session-cache/pull/7) adds the ability to set the session cookie domain, secure, and
+  httponly options. Each may be passed to the `CacheSessionPersistence`
+  constructor, or as options consumed by its factory. See the documentation for
+  full details.
 
 ### Changed
 
