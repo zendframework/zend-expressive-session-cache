@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "517479400e7bec7aae33c0acfe73c45e",
+    "content-hash": "aa02ef0705217e018ed9cff200dcc3ee",
     "packages": [
         {
             "name": "dflydev/fig-cookies",
