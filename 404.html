@@ -7,11 +7,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="PSR-6 session persistence adapter for zend-expressive-session.">  
-    <link rel="shortcut icon" href="../../img/favicon.ico">
+    <link rel="shortcut icon" href="//img/favicon.ico">
 
-    <title>Introduction - zend-expressive-session-cache - Zend Framework Docs</title>
+    <title>zend-expressive-session-cache - Zend Framework Docs</title>
 
-    <link rel="stylesheet" href="../../css/styles-f3b53f5ceb.css">
+    <link rel="stylesheet" href="//css/styles-f3b53f5ceb.css">
 </head>
 <body id="page-top">
 
@@ -31,7 +31,7 @@
             
             <span class="navbar-brand">
                 <a class="logo-link" href="https://framework.zend.com/" data-tooltip data-placement="bottom" title="Go to the ZF homepage">
-                    <img src="../../img/zend-framework-logo.svg" height="28" alt="Zend Framework">
+                    <img src="//img/zend-framework-logo.svg" height="28" alt="Zend Framework">
                 </a>
             </span>
         </div>
@@ -66,7 +66,7 @@
                     
     <div class="subnavigation hidden-print">
         <h4 class="subnavigation__title">
-            <a href="../..">zend-expressive-session-cache</a>
+            <a href="/.">zend-expressive-session-cache</a>
         </h4>
 
         <h5 class="subnavigation__subtitle">Table of Contents</h5>
@@ -74,20 +74,20 @@
         <ul class="subnavigation__list">
             
                 
-                    <li class="subnavigation__list-item subnavigation__list-item--active">
-                        <a href="./" class="subnavigation__link">Introduction</a>
+                    <li class="subnavigation__list-item ">
+                        <a href="/v1/intro/" class="subnavigation__link">Introduction</a>
                     </li>
                 
             
                 
                     <li class="subnavigation__list-item ">
-                        <a href="../config/" class="subnavigation__link">Configuration</a>
+                        <a href="/v1/config/" class="subnavigation__link">Configuration</a>
                     </li>
                 
             
                 
                     <li class="subnavigation__list-item ">
-                        <a href="../manual/" class="subnavigation__link">Manual Usage</a>
+                        <a href="/v1/manual/" class="subnavigation__link">Manual Usage</a>
                     </li>
                 
             
@@ -160,105 +160,18 @@
             <div class="col-md-9 col-xs-12 content" role="main">
             <!-- content:begin -->
                 
-                    <ol class="breadcrumb" role="navigation" aria-label="breadcrumbs navigation">
-    <li><a href="https://framework.zend.com/">Home</a></li>
 
-    
-        <li><a href="https://docs.zendframework.com/">Documentation</a></li>
+<h1 class="content__title">404</h1>
+<blockquote>
+    <h3>Something went wrong!</h3>
+    <p>
+        We're sorry, but the page you are looking for does not exist.
+    </p>
+</blockquote>
 
-        
-            <li><a href="../..">zend-expressive-session-cache</a></li>
-
-            
-
-            <li class="active">Introduction</li>
-        
-    
-</ol>
+<a href="/" class="btn btn-default" role="button">Go to homepage</a>
 
 
-    
-
-    
-    
-
-    
-    
-        <div class="toc">
-            <h6 class="toc__headline">In This Article</h6>
-            <ul class="toc__list">
-                
-                    <li class="toc__entry">
-                        <a href="#installation" class="toc__link">Installation</a>
-                    </li>
-                
-                    <li class="toc__entry">
-                        <a href="#usage" class="toc__link">Usage</a>
-                    </li>
-                
-            </ul>
-        </div>
-    
-
-
-    <h1 id="introduction">Introduction</h1>
-<p>This component provides a <a href="https://www.php-fig.org/psr/psr-6/">PSR-6</a> session
-persistence adapter for use with <a href="https://docs.zendframework.com/zend-expressive-session/">zend-expressive-session</a>.</p>
-<p>PSR-6 defines cache items and cache item pools. This package uses a cache item
-pool in which to store and retrieve sessions. PSR-6 was chosen over the simpler
-<a href="https://www.php-fig.org/psr/psr-16/">PSR-16</a> as it specifically provides
-functionality around <em>expiry</em>, which allows us to expire sessions.</p>
-<h2 id="installation">Installation</h2>
-<p>Install zend-expressive-session-cache via <a href="https://getcomposer.org/">Composer</a>:</p>
-<pre class="codehilite"><code class="language-bash">$ composer require zendframework/zend-expressive-session-cache</code></pre>
-
-<p>You will also need to install a package that provides a PSR-6
-<code>CacheItemPoolInterface</code> implementation. You can <a href="https://packagist.org/providers/psr/cache-implementation">search for PSR-6 providers on
-Packagist</a>. We have
-had excellent luck with the various implementations provided by the <a href="http://www.php-cache.com/en/latest/">PHP-Cache
-project</a>.</p>
-<h2 id="usage">Usage</h2>
-<p>Generally, you will only provide configuration for this service, including
-configuring a PSR-6 <code>CacheItemPoolInterface</code> service; zend-expressive-session
-will then consume it via its <a href="https://docs.zendframework.com/zend-expressive-session/middleware/">SessionMiddleware</a>.</p>
-
-
-
-    <nav>
-    <ul class="page-nav hidden-print">
-
-        
-        <li class="page-nav__item">
-            
-                <a rel="prev" class="page-nav__link page-nav__link--prev" href="../..">
-                    <i class="fa fa-chevron-left"></i> Previous
-                </a>
-            
-        </li>
-
-        
-        <li class="page-nav__item">
-            
-                <a rel="next" class="page-nav__link page-nav__link--next" href="../config/">
-                    Next <i class="fa fa-chevron-right"></i>
-                </a>
-            
-        </li>
-    </ul>
-</nav>
-
-
-
-    <div class="help-wanted">
-        <p>
-            Found a mistake or want to contribute to the documentation?
-            <a href="https://github.com/zendframework/zend-expressive-session-cache/edit/master/docs/book/v1/intro.md" target="_blank" class="help-wanted__link">
-                Edit this page on GitHub!
-            </a>
-        </p>
-    </div>
-
-                
             <!-- content:end -->
             </div>
             <div class="col-md-3 col-xs-12 sidebar">
@@ -274,7 +187,7 @@ will then consume it via its <a href="https://docs.zendframework.com/zend-expres
                     
     <div class="subnavigation hidden-print">
         <h4 class="subnavigation__title">
-            <a href="../..">zend-expressive-session-cache</a>
+            <a href="/.">zend-expressive-session-cache</a>
         </h4>
 
         <h5 class="subnavigation__subtitle">Table of Contents</h5>
@@ -282,20 +195,20 @@ will then consume it via its <a href="https://docs.zendframework.com/zend-expres
         <ul class="subnavigation__list">
             
                 
-                    <li class="subnavigation__list-item subnavigation__list-item--active">
-                        <a href="./" class="subnavigation__link">Introduction</a>
+                    <li class="subnavigation__list-item ">
+                        <a href="/v1/intro/" class="subnavigation__link">Introduction</a>
                     </li>
                 
             
                 
                     <li class="subnavigation__list-item ">
-                        <a href="../config/" class="subnavigation__link">Configuration</a>
+                        <a href="/v1/config/" class="subnavigation__link">Configuration</a>
                     </li>
                 
             
                 
                     <li class="subnavigation__list-item ">
-                        <a href="../manual/" class="subnavigation__link">Manual Usage</a>
+                        <a href="/v1/manual/" class="subnavigation__link">Manual Usage</a>
                     </li>
                 
             
@@ -370,11 +283,11 @@ will then consume it via its <a href="https://docs.zendframework.com/zend-expres
 </footer>
 
     <script>
-        var base_url = '../..',
+        var base_url = '/',
             siteName = 'zend-expressive-session-cache';
     </script>
-    <script src="../../js/scripts-8d7ae56abf.js"></script>
-        <script src="../../search/main.js"></script>
+    <script src="//js/scripts-8d7ae56abf.js"></script>
+        <script src="/search/main.js"></script>
 
     
     <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
