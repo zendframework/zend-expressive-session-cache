@@ -222,7 +222,7 @@
 
     <h1 id="manual-usage">Manual usage</h1>
 <p>The following details the constructor of the <code>Zend\Expressive\Session\Cache\CacheSessionPersistence</code> class:</p>
-<pre class="codehilite"><code class="language-php">/**
+<p> <pre class=codehilite><code class=language-php>/**
  * Prepare session cache and default HTTP caching headers.
  *
  * @param CacheItemPoolInterface $cache The cache pool instance
@@ -267,10 +267,9 @@ public function __construct(
     string $cookieDomain = null,
     bool $cookieSecure = false,
     bool $cookieHttpOnly = false
-) {</code></pre>
-
+) {</code></pre></p>
 <p>Pass all required values and any optional values when creating an instance:</p>
-<pre class="codehilite"><code class="language-php">use Cache\Adapter\Predis\PredisCachePool;
+<p> <pre class=codehilite><code class=language-php>use Cache\Adapter\Predis\PredisCachePool;
 use Zend\Expressive\Session\Cache\CacheSessionPersistence;
 use Zend\Expressive\Session\SessionMiddleware;
 
@@ -282,7 +281,7 @@ $persistence = new CacheSessionPersistence(
     'public',
     60 * 60 * 24 * 30 // 30 days
 );
-$middleware = new SessionMiddleware($persistence);</code></pre>
+$middleware = new SessionMiddleware($persistence);</code></pre></p>
 
 
 
@@ -312,7 +311,7 @@ $middleware = new SessionMiddleware($persistence);</code></pre>
     <div class="help-wanted">
         <p>
             Found a mistake or want to contribute to the documentation?
-            <a href="https://github.com/zendframework/zend-expressive-session-cache/edit/master/docs/v1/manual.md" target="_blank" class="help-wanted__link">
+            <a href="https://github.com/zendframework/zend-expressive-session-cache/edit/master/docs/book/v1/manual.md" target="_blank" class="help-wanted__link">
                 Edit this page on GitHub!
             </a>
         </p>

@@ -264,22 +264,21 @@
 array-like value. Inside this value, it looks for a key named
 <code>zend-expressive-session-cache</code>, which is expected to be an associative array or
 object that acts like an associative array.</p>
-<pre class="codehilite"><code class="language-php">return [
+<p> <pre class=codehilite><code class=language-php>return [
     'zend-expressive-session-cache' =&gt; [
         // key/value pairs
     ],
-];</code></pre>
-
+];</code></pre></p>
 <h2 id="cacheitempoolinterface">CacheItemPoolInterface</h2>
 <p>By default, the factory will look for a service named
 <code>Psr\Cache\CacheItemPoolInterface</code>. If found, that service will be used to seed
 the persistence adapter.</p>
 <p>You may also provide a <code>cache_item_pool_service</code> configuration value. If
 present, this service name will be queried instead.</p>
-<h3 id="using-a-global-pool">Using a global pool</h3>
+<h3>Using a global pool</h3>
 <p>To use a global cache item pool, configure the PSR-6 <code>CacheItemPoolInterface</code>
 service in your dependency configuration:</p>
-<pre class="codehilite"><code class="language-php">use Psr\Cache\CacheItemPoolInterface;
+<p> <pre class=codehilite><code class=language-php>use Psr\Cache\CacheItemPoolInterface;
 
 return [
     'dependencies' =&gt; [
@@ -287,11 +286,10 @@ return [
             CacheItemPoolInterface::class =&gt; FactoryProvidingACachePool::class,
         ],
     ],
-];</code></pre>
-
-<h3 id="using-a-named-pool">Using a named pool</h3>
+];</code></pre></p>
+<h3>Using a named pool</h3>
 <p>To use a specific cache item pool:</p>
-<pre class="codehilite"><code class="language-php">use Psr\Cache\CacheItemPoolInterface;
+<p> <pre class=codehilite><code class=language-php>use Psr\Cache\CacheItemPoolInterface;
 
 return [
     'dependencies' =&gt; [
@@ -302,13 +300,12 @@ return [
     'zend-expressive-session-cache' =&gt; [
         'cache_item_pool_service' =&gt; 'MoreSpecificPool',
     ],
-];</code></pre>
-
+];</code></pre></p>
 <h2 id="non-pool-configuration">Non-Pool configuration</h2>
 <p>As noted earlier, you may configure a number of other values to customize your
 persistence adapter. The following is example configuration, with inline
 comments detailing expected and default values.</p>
-<pre class="codehilite"><code class="language-php">use Psr\Cache\CacheItemPoolInterface;
+<p> <pre class=codehilite><code class=language-php>use Psr\Cache\CacheItemPoolInterface;
 
 return [
     'zend-expressive-session-cache' =&gt; [
@@ -344,7 +341,7 @@ return [
 
         // Governs the various cache control headers emitted when
         // a session cookie is provided to the client. Value may be one
-        // of "nocache", "public", "private", or "private_no_expire";
+        // of &quot;nocache&quot;, &quot;public&quot;, &quot;private&quot;, or &quot;private_no_expire&quot;;
         // semantics are the same as outlined in
         // http://php.net/session_cache_limiter
         'cache_limiter' =&gt; 'nocache',
@@ -373,8 +370,7 @@ return [
         // the below flag is toggled off.
         'persistent' =&gt; false,
     ],
-];</code></pre>
-
+];</code></pre></p>
 <h2 id="using-the-service">Using the service</h2>
 <p>By default, this package define the service <code>Zend\Expressive\Session\Cache\CacheSessionPersistence</code>,
 assigning it to the factory <code>Zend\Expressive\Session\Cache\CacheSessionPersistenceFactory</code>.
@@ -384,7 +380,7 @@ use this service when using the <code>SessionMiddleware</code>.</p>
 You can tell your container to use the <code>CacheSessionPersistence</code> in two
 different ways.</p>
 <p>First, you can <em>alias</em> it:</p>
-<pre class="codehilite"><code class="language-php">// in config/autoload/dependencies.global.php:
+<p> <pre class=codehilite><code class=language-php>// in config/autoload/dependencies.global.php:
 use Zend\Expressive\Session\Cache\CacheSessionPersistence;
 use Zend\Expressive\Session\SessionPersistenceInterface;
 
@@ -394,11 +390,10 @@ return [
             SessionPersistenceInterface::class =&gt; CacheSessionPersistence::class,
         ],
     ],
-];</code></pre>
-
+];</code></pre></p>
 <p>Second, you can instead assign the <code>SessionPersistenceInterface</code> service to the
 factory for the <code>CacheSessionPersistence</code> implementation:</p>
-<pre class="codehilite"><code class="language-php">// in config/autoload/dependencies.global.php:
+<p> <pre class=codehilite><code class=language-php>// in config/autoload/dependencies.global.php:
 use Zend\Expressive\Session\Cache\CacheSessionPersistenceFactory;
 use Zend\Expressive\Session\SessionPersistenceInterface;
 
@@ -408,7 +403,7 @@ return [
             SessionPersistenceInterface::class =&gt; CacheSessionPersistenceFactory::class,
         ],
     ],
-];</code></pre>
+];</code></pre></p>
 
 
 
@@ -442,7 +437,7 @@ return [
     <div class="help-wanted">
         <p>
             Found a mistake or want to contribute to the documentation?
-            <a href="https://github.com/zendframework/zend-expressive-session-cache/edit/master/docs/v1/config.md" target="_blank" class="help-wanted__link">
+            <a href="https://github.com/zendframework/zend-expressive-session-cache/edit/master/docs/book/v1/config.md" target="_blank" class="help-wanted__link">
                 Edit this page on GitHub!
             </a>
         </p>
