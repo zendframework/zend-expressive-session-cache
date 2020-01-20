@@ -2,7 +2,7 @@
 
 > ## Repository abandoned 2019-12-31
 >
-> This repository has moved to mezzio/mezzio-session-cache.
+> This repository has moved to [mezzio/mezzio-session-cache](https://github.com/mezzio/mezzio-session-cache).
 
 [![Build Status](https://secure.travis-ci.org/zendframework/zend-expressive-session-cache.svg?branch=master)](https://secure.travis-ci.org/zendframework/zend-expressive-session-cache)
 [![Coverage Status](https://coveralls.io/repos/github/zendframework/zend-expressive-session-cache/badge.svg?branch=master)](https://coveralls.io/github/zendframework/zend-expressive-session-cache?branch=master)
