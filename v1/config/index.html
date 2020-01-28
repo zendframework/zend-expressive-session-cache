@@ -7,12 +7,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="PSR-6 session persistence adapter for zend-expressive-session.">  
-    <link rel="canonical" href="https://docs.zendframework.com/zend-expressive-session-cache/v1/config/">
+    <link rel="canonical" href="https://docs.zendframework.com/v1/config/">
     <link rel="shortcut icon" href="../../img/favicon.ico">
 
     <title>Configuration - zend-expressive-session-cache - Zend Framework Docs</title>
 
-    <link rel="stylesheet" href="../../css/styles-5cfabd53ee.css">
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body id="page-top">
 
@@ -174,9 +174,9 @@
     <div class="laminas-announcement">
     <div class="container">
         <div class="row">
-            <div class="col-xs-12">
-                Zend Framework transitions to the Linux Foundation. <a href="https://getlaminas.org">Learn More.</a>
-            </div>
+            <div class="col-xs-12"><strong>
+                This package has moved. Visit its replacement, <a href="https://docs.mezzio.dev/mezzio-session-cache/">mezzio/mezzio-session-cache.</a>
+            </strong></div>
         </div>
     </div>
 </div>
@@ -264,11 +264,13 @@
 array-like value. Inside this value, it looks for a key named
 <code>zend-expressive-session-cache</code>, which is expected to be an associative array or
 object that acts like an associative array.</p>
-<p> <pre class=codehilite><code class=language-php>return [
+<pre><code class="language-php">return [
     'zend-expressive-session-cache' =&gt; [
         // key/value pairs
     ],
-];</code></pre></p>
+];
+</code></pre>
+
 <h2 id="cacheitempoolinterface">CacheItemPoolInterface</h2>
 <p>By default, the factory will look for a service named
 <code>Psr\Cache\CacheItemPoolInterface</code>. If found, that service will be used to seed
@@ -278,7 +280,7 @@ present, this service name will be queried instead.</p>
 <h3>Using a global pool</h3>
 <p>To use a global cache item pool, configure the PSR-6 <code>CacheItemPoolInterface</code>
 service in your dependency configuration:</p>
-<p> <pre class=codehilite><code class=language-php>use Psr\Cache\CacheItemPoolInterface;
+<pre><code class="language-php">use Psr\Cache\CacheItemPoolInterface;
 
 return [
     'dependencies' =&gt; [
@@ -286,10 +288,12 @@ return [
             CacheItemPoolInterface::class =&gt; FactoryProvidingACachePool::class,
         ],
     ],
-];</code></pre></p>
+];
+</code></pre>
+
 <h3>Using a named pool</h3>
 <p>To use a specific cache item pool:</p>
-<p> <pre class=codehilite><code class=language-php>use Psr\Cache\CacheItemPoolInterface;
+<pre><code class="language-php">use Psr\Cache\CacheItemPoolInterface;
 
 return [
     'dependencies' =&gt; [
@@ -300,12 +304,14 @@ return [
     'zend-expressive-session-cache' =&gt; [
         'cache_item_pool_service' =&gt; 'MoreSpecificPool',
     ],
-];</code></pre></p>
+];
+</code></pre>
+
 <h2 id="non-pool-configuration">Non-Pool configuration</h2>
 <p>As noted earlier, you may configure a number of other values to customize your
 persistence adapter. The following is example configuration, with inline
 comments detailing expected and default values.</p>
-<p> <pre class=codehilite><code class=language-php>use Psr\Cache\CacheItemPoolInterface;
+<pre><code class="language-php">use Psr\Cache\CacheItemPoolInterface;
 
 return [
     'zend-expressive-session-cache' =&gt; [
@@ -370,7 +376,9 @@ return [
         // the below flag is toggled off.
         'persistent' =&gt; false,
     ],
-];</code></pre></p>
+];
+</code></pre>
+
 <h2 id="using-the-service">Using the service</h2>
 <p>By default, this package define the service <code>Zend\Expressive\Session\Cache\CacheSessionPersistence</code>,
 assigning it to the factory <code>Zend\Expressive\Session\Cache\CacheSessionPersistenceFactory</code>.
@@ -380,7 +388,7 @@ use this service when using the <code>SessionMiddleware</code>.</p>
 You can tell your container to use the <code>CacheSessionPersistence</code> in two
 different ways.</p>
 <p>First, you can <em>alias</em> it:</p>
-<p> <pre class=codehilite><code class=language-php>// in config/autoload/dependencies.global.php:
+<pre><code class="language-php">// in config/autoload/dependencies.global.php:
 use Zend\Expressive\Session\Cache\CacheSessionPersistence;
 use Zend\Expressive\Session\SessionPersistenceInterface;
 
@@ -390,10 +398,12 @@ return [
             SessionPersistenceInterface::class =&gt; CacheSessionPersistence::class,
         ],
     ],
-];</code></pre></p>
+];
+</code></pre>
+
 <p>Second, you can instead assign the <code>SessionPersistenceInterface</code> service to the
 factory for the <code>CacheSessionPersistence</code> implementation:</p>
-<p> <pre class=codehilite><code class=language-php>// in config/autoload/dependencies.global.php:
+<pre><code class="language-php">// in config/autoload/dependencies.global.php:
 use Zend\Expressive\Session\Cache\CacheSessionPersistenceFactory;
 use Zend\Expressive\Session\SessionPersistenceInterface;
 
@@ -403,7 +413,8 @@ return [
             SessionPersistenceInterface::class =&gt; CacheSessionPersistenceFactory::class,
         ],
     ],
-];</code></pre></p>
+];
+</code></pre>
 
 
 
@@ -544,7 +555,7 @@ return [
             
             <div class="col-md-9">
                 <h4 class="footer__headline">Copyright</h4>
-                <p>&copy; 2006-2019 by <a href="https://www.zend.com/">Zend</a>, a <a href="https://www.roguewave.com/">Rogue Wave Company</a>.</p>
+                <p>&copy; 2006-2020 by <a href="https://www.zend.com/">Zend</a> by <a href="https://www.perforce.com/">Perforce</a>.</p>
             </div>
 
             
@@ -552,10 +563,10 @@ return [
                 <h4 class="footer__headline">Support</h4>
                 <ul class="support__list">
                     <li class="support__list-item">
-                        <a href="https://discourse.zendframework.com" class="support__link" title="Forum"><i class="fa fa-comments"></i></a>
+                        <a href="https://discourse.laminas.dev" class="support__link" title="Forum"><i class="fa fa-comments"></i></a>
                     </li>
                     <li class="support__list-item">
-                        <a href="https://zendframework-slack.herokuapp.com" class="support__link" title="Chat"><i class="fa fa-slack"></i></a>
+                        <a href="https://laminas.dev/chat/" class="support__link" title="Chat"><i class="fa fa-slack"></i></a>
                     </li>
                     <li class="support__list-item">
                         <a href="https://github.com/zendframework" class="support__link" title="Github"><i class="fa fa-github"></i></a>
@@ -563,27 +574,28 @@ return [
                     <li class="support__list-item">
                         <a href="https://twitter.com/zfdevteam" class="support__link" title="Twitter"><i class="fa fa-twitter"></i></a>
                     </li>
-                    <li class="support__list-item">
-                        <a href="https://tinyletter.com/mwopzend" class="support__link" title="Newsletter"><i class="fa fa-envelope"></i></a>
-                    </li>
-                    <li class="support__list-item">
-                        <a href="https://framework.zend.com/blog/feed-rss.xml" class="support__link" title="Blog feed"><i class="fa fa-rss"></i></a>
-                    </li>
-                    <li class="support__list-item">
-                        <a href="https://framework.zend.com/security/feed" class="support__link" title="Security feed"><i class="fa fa-rss-square"></i></a>
-                    </li>
                 </ul>
             </div>
         </div>
     </div>
 </footer>
 
+<nav class="cookie-bar navbar navbar-fixed-bottom navbar-default hidden">
+    <div class="container">
+        <p class="navbar-text">
+            We use cookies to allow you to dismiss dialogs such as the Laminas
+            Project notification.
+        </p>
+        <button type="button" class="cookie-button btn btn-default navbar-btn">Allow Cookies</button>
+    </div>
+</nav>
+
     <script>
         var base_url = '../..',
             siteName = 'zend-expressive-session-cache';
     </script>
-    <script src="../../js/scripts-8d7ae56abf.js"></script>
-        <script src="../../search/main.js"></script>
+    <script src="/js/scripts.js"></script>
+    <script src="../../search/main.js"></script>
 
     
     <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
